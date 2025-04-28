@@ -8,8 +8,8 @@ import Slider from "react-slick";
 import type { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { cards } from "@/src/data/home";
-import { CardData } from "@/src/types/home";
+import { cards } from "../_data/home";
+import { CardData } from "../_types/home";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 

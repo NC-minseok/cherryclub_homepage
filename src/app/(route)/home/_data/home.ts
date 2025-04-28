@@ -1,4 +1,4 @@
-import { CardData, RegionData, StatData } from "@/src/types/home";
+import { CardData, RegionData, StatData } from "../_types/home";
 
 // 카드 데이터
 export const cards: CardData[] = [

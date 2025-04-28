@@ -3,8 +3,8 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
-import { regions, stats } from "@/src/data/home";
-import { RegionData } from "@/src/types/home";
+import { regions, stats } from "../_data/home";
+import { RegionData } from "../_types/home";
 import StatCounter from "./StatCounter";
 import RegionPopup from "./RegionPopup";
 

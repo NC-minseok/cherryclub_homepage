@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { RegionData } from "@/src/types/home";
+import { RegionData } from "../_types/home";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface RegionPopupProps {

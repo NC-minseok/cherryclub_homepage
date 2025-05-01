@@ -8,7 +8,7 @@ import {
   AnimatePresence,
 } from "framer-motion";
 
-export default function HeroSection() {
+export default function HeroTitleSection() {
   const ref = useRef(null);
   const [showTitle, setShowTitle] = useState(false);
   const [videoDarken, setVideoDarken] = useState(false);

@@ -47,7 +47,11 @@ yarn install
 3. 개발 서버 실행:
 
 ```bash
-npm run dev
+npm run dev : 개발 서버 실행
+
+npm run build : 빌드
+
+npm start : 배포
 # 또는
 yarn dev
 ```

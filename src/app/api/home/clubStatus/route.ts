@@ -19,7 +19,7 @@ export async function GET() {
       region,
       count(*) as totalCount 
       FROM users
-      WHERE region != '0' AND region != '졸업'
+      WHERE region != '0'
       GROUP BY region;`
     );
 

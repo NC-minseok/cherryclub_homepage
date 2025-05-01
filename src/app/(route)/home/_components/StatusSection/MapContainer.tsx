@@ -19,6 +19,9 @@ export default function MapContainer({
   onRegionClick,
   onClosePopup,
 }: MapContainerProps) {
+  // 원래 지역과 해외 지역을 합친 배열
+  const allRegions = [...regions];
+
   return (
     <motion.div
       className="relative mx-auto max-w-3xl gsap-scale"
@@ -62,7 +65,7 @@ export default function MapContainer({
         </div>
 
         {/* 지역 핀 */}
-        {regions.map((region) => (
+        {allRegions.map((region) => (
           <motion.div
             key={region.id}
             className="absolute"
@@ -84,11 +87,13 @@ export default function MapContainer({
             onClick={() => onRegionClick(region)}
           >
             <div className="relative cursor-pointer group">
+              {/* 일반 지역인 경우 기존 스타일 유지 */}
               <motion.div
                 className="absolute -inset-3 rounded-full bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               ></motion.div>
+
               <motion.div
                 initial={{ y: -10, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
@@ -98,23 +103,26 @@ export default function MapContainer({
                   duration: 0.3,
                 }}
               >
-                <svg
-                  width="24"
-                  height="32"
-                  viewBox="0 0 30 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="drop-shadow-lg w-4 h-5 sm:w-6 sm:h-8"
-                >
-                  <path
-                    d="M15 0C6.72 0 0 6.72 0 15C0 26.25 15 40 15 40C15 40 30 26.25 30 15C30 6.72 23.28 0 15 0ZM15 20.5C12 20.5 9.5 18 9.5 15C9.5 12 12 9.5 15 9.5C18 9.5 20.5 12 20.5 15C20.5 18 18 20.5 15 20.5Z"
-                    fill="#E5172F"
-                  />
-                  <circle cx="15" cy="15" r="7" fill="white" />
-                </svg>
+                {/* 해외 지역인 경우 다른 아이콘 사용 */}
+                {
+                  <svg
+                    width="24"
+                    height="32"
+                    viewBox="0 0 30 40"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="drop-shadow-lg w-4 h-5 sm:w-6 sm:h-8"
+                  >
+                    <path
+                      d="M15 0C6.72 0 0 6.72 0 15C0 26.25 15 40 15 40C15 40 30 26.25 30 15C30 6.72 23.28 0 15 0ZM15 20.5C12 20.5 9.5 18 9.5 15C9.5 12 12 9.5 15 9.5C18 9.5 20.5 12 20.5 15C20.5 18 18 20.5 15 20.5Z"
+                      fill="#E5172F"
+                    />
+                    <circle cx="15" cy="15" r="7" fill="white" />
+                  </svg>
+                }
               </motion.div>
               <motion.div
-                className="absolute -top-2 -right-2 w-4 h-4 sm:w-5 sm:h-5 bg-blue-600 rounded-full flex items-center justify-center text-white text-[10px] sm:text-xs font-bold border-2 border-white shadow-md"
+                className={`absolute -top-2 -right-2 w-4 h-4 sm:w-5 sm:h-5 bg-blue-600 rounded-full flex items-center justify-center text-white text-[10px] sm:text-xs font-bold border-2 border-white shadow-md`}
                 initial={{ scale: 0, opacity: 0 }}
                 whileInView={{ scale: 1, opacity: 1 }}
                 viewport={{ once: true }}
@@ -138,7 +146,9 @@ export default function MapContainer({
                   duration: 0.7,
                   ease: "easeOut",
                 }}
-                className="absolute left-1/2 top-1/2 -ml-3 -mt-3 w-4 h-4 sm:w-6 sm:h-6 bg-blue-400 rounded-full"
+                className={`absolute left-1/2 top-1/2 -ml-3 -mt-3 w-4 h-4 sm:w-6 sm:h-6 ${
+                  region.id === 9 ? "bg-purple-400" : "bg-blue-400"
+                } rounded-full`}
               />
             </div>
           </motion.div>

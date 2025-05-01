@@ -55,4 +55,7 @@
   
   <polygon class="cls-1 region-hover" points="440.74 151.66 445 153.53 442.87 150.95 440.74 151.66"/>
   <polygon class="region-border" points="440.74 151.66 445 153.53 442.87 150.95 440.74 151.66"/>
+  
+  <polygon class="cls-1 region-hover" points="435 490 455 485 465 495 460 510 440 515 430 505 435 490"/>
+  <polygon class="region-border" points="435 490 455 485 465 495 460 510 440 515 430 505 435 490"/>
 </svg>

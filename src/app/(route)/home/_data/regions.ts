@@ -74,6 +74,16 @@ const FALLBACK_REGIONS: RegionData[] = [
     universities: [],
     leader: "이상준",
   },
+
+  {
+    id: 9,
+    name: "해외",
+    x: 86,
+    y: 82,
+    count: 0,
+    universities: [],
+    leader: "이재하",
+  },
 ];
 
 // 지역명 API 매핑

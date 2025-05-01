@@ -137,7 +137,13 @@ export default function RegionPopup({
                   d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
                 />
               </svg>
-              문의하기
+              <a
+                href="https://www.instagram.com/kings_hero0214/?igsh=MWxoZWU5NGZhd3g0bQ%3D%3D#"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                문의하기
+              </a>
             </motion.button>
           </div>
         </motion.div>

@@ -125,7 +125,7 @@ export default function MapContainer({
                   damping: 15,
                 }}
               >
-                {region.count}
+                {region.universities.length}
               </motion.div>
 
               {/* 핀이 꽂힐 때 나타나는 효과 */}

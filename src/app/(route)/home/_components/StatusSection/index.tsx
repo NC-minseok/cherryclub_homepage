@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useInView } from "framer-motion";
-import { regions, stats } from "../../_data/regions";
-import { RegionData } from "../../_types/regionData";
+import { fetchRegionsData } from "../../_data/regions";
+import { RegionData, StatData } from "../../_types/regionData";
 import SectionTag from "../SectionTag";
 import StatsGrid from "./StatsGrid";
 import MapContainer from "./MapContainer";
@@ -11,11 +11,39 @@ import { AnimatedTitle } from "@/src/shared/components";
 
 export default function StatusSection() {
   const [selectedRegion, setSelectedRegion] = useState<RegionData | null>(null);
+  const [regions, setRegions] = useState<RegionData[]>([]);
+  const [stats, setStats] = useState<StatData[]>([]);
+
   const statsRef = useRef<HTMLDivElement>(null);
   const isStatsInView = useInView(statsRef, {
     once: true,
     margin: "-100px 0px",
   });
+
+  // 데이터 가져오기
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadData() {
+      try {
+        const data = await fetchRegionsData();
+
+        if (isMounted) {
+          setRegions(data.regions);
+          setStats(data.stats);
+        }
+      } catch (error) {
+        console.error("데이터 로딩 오류:", error);
+      }
+    }
+
+    loadData();
+
+    // 컴포넌트 언마운트 시 정리
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // 지역 클릭 핸들러
   const handleRegionClick = (region: RegionData) => {

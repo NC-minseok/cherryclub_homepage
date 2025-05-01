@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { RegionData } from "../../_types/home";
+import { RegionData } from "../../_types/regionData";
 import { motion, AnimatePresence } from "framer-motion";
 import { Masker } from "@toss/utils";
 

@@ -21,7 +21,7 @@ export default function AnimatedTitleDescription({
   className,
 }: AnimatedIntroDescriptionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { itemVariants, style } = useScrollAnimation(containerRef);
+  const { itemVariants, style } = useScrollAnimation();
 
   const INTRO_DESCRIPTION_TEXT_CLASSES = `
       ${

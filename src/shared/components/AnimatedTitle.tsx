@@ -20,7 +20,7 @@ export default function AnimatedTitle({ text, className }: AnimatedTitleProps) {
 
   // 커스텀 훅 사용
   useFitty(titleRef);
-  const { itemVariants, style } = useScrollAnimation(containerRef);
+  const { itemVariants, style } = useScrollAnimation();
 
   return (
     <motion.div ref={containerRef}>

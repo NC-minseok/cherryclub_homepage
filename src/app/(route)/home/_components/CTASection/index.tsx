@@ -1,28 +1,31 @@
-"use client";
-
 import { motion } from "framer-motion";
 import Link from "next/link";
 import SectionTag from "../SectionTag";
+import useScrollAnimation from "@/src/shared/hook/useScrollAnimation";
 
 export default function CTASection() {
+  const { itemVariants, style } = useScrollAnimation();
+
   return (
     <section className="py-36 bg-gradient-to-b from-blue-50 to-blue-100 relative overflow-hidden">
       <div className="container mx-auto px-4 text-center relative z-10">
         <SectionTag text="체리동아리 신청하기" />
         <motion.div
           className="max-w-5xl mx-auto"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          variants={itemVariants}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true }}
+          style={{ ...style }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <motion.h1
             className="text-xl md:text-7xl mb-14 max-w-3xl mx-auto leading-relaxed text-gray-700"
-            style={{ wordBreak: "keep-all", overflowWrap: "break-word" }}
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            style={{
+              wordBreak: "keep-all",
+              overflowWrap: "break-word",
+            }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <span className="block mb-2 text-blue-600 font-bold">
               오늘은 캠퍼스로!
@@ -36,9 +39,6 @@ export default function CTASection() {
           </motion.h1>
           <motion.div
             className="text-center mt-10"
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <motion.div

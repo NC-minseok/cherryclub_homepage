@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { RegionData } from "../../_types/home";
+import { RegionData } from "../../_types/regionData";
 import RegionPopup from "./RegionPopup";
 
 // 지도 컨테이너 컴포넌트

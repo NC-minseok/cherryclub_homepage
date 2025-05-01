@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { StatData } from "../../_types/home";
+import { StatData } from "../../_types/regionData";
 import StatCounter from "./StatCounter";
 
 // 통계 그리드 컴포넌트

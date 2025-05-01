@@ -3,12 +3,11 @@
 import { useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { regions, stats } from "../../_data/regions";
-import { RegionData } from "../../_types/home";
+import { RegionData } from "../../_types/regionData";
 import SectionTag from "../SectionTag";
 import StatsGrid from "./StatsGrid";
 import MapContainer from "./MapContainer";
 import { AnimatedTitle } from "@/src/shared/components";
-import useGsapAnimations from "@/src/shared/hook/useGsapAnimaions";
 
 export default function StatusSection() {
   const [selectedRegion, setSelectedRegion] = useState<RegionData | null>(null);
@@ -27,8 +26,6 @@ export default function StatusSection() {
   const handleClosePopup = () => {
     setSelectedRegion(null);
   };
-
-  useGsapAnimations();
 
   return (
     <section className="py-10 sm:py-16 md:py-20 bg-gradient-to-b from-blue-50 via-white to-blue-50 overflow-hidden">

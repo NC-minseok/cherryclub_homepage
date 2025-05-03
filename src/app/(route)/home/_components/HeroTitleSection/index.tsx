@@ -7,13 +7,21 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectFade } from "swiper/modules";
+import Image from "next/image";
+
+// Swiper 스타일 불러오기
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/autoplay";
+import Intro from "./Intro";
 
 export default function HeroTitleSection() {
   const ref = useRef(null);
-  const [showTitle, setShowTitle] = useState(false);
-  const [videoDarken, setVideoDarken] = useState(false);
-  const [videoModal, setVideoModal] = useState(false);
-  const [videoSrc, setVideoSrc] = useState("/videos/title.mp4");
+  // 타이틀과 어둡게 처리를 처음부터 표시
+  const [heroImages, setHeroImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -23,175 +31,109 @@ export default function HeroTitleSection() {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
+  // API에서 이미지 목록 가져오기
   useEffect(() => {
-    // 배경 어둡게 처리 타이머
-    const darkenTimer = setTimeout(() => {
-      setVideoDarken(true);
-    }, 11000);
+    const fetchImages = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/get-hero-images");
 
-    // 타이틀 표시 타이머
-    const titleTimer = setTimeout(() => {
-      setShowTitle(true);
-    }, 11000);
+        if (!response.ok) {
+          throw new Error("이미지를 가져오는데 실패했습니다");
+        }
 
-    // 화면 크기 감지 함수
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setVideoSrc("/videos/title_mobile.mp4");
-      } else {
-        setVideoSrc("/videos/title.mp4");
+        const images = await response.json();
+        setHeroImages(images);
+      } catch (error) {
+        console.error("이미지 로딩 중 오류:", error);
+        // 오류 발생 시 기본 이미지 설정
+        setHeroImages([
+          "/images/home/HeroSession/DSC01527.jpg",
+          "/images/home/HeroSession/DSC04061.JPG",
+        ]);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    // 초기 실행
-    handleResize();
-
-    // 리사이즈 이벤트 리스너 등록
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      clearTimeout(titleTimer);
-      clearTimeout(darkenTimer);
-      window.removeEventListener("resize", handleResize);
-    };
+    fetchImages();
   }, []);
 
   return (
-    <section
-      ref={ref}
-      className="relative h-screen overflow-hidden flex items-center justify-center"
-    >
-      <motion.div
-        style={{ y, opacity }}
-        className="relative z-10 text-center px-4 max-w-4xl mx-auto"
-      >
-        <AnimatePresence>
-          {showTitle && (
-            <>
-              <motion.h1
-                initial={{ opacity: 0, scale: 0.5, y: 50 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{
-                  duration: 1.2,
-                  ease: [0.2, 0.65, 0.3, 1],
-                  scale: { type: "spring", stiffness: 80 },
-                }}
-                className="text-5xl sm:text-6xl md:text-9xl font-extrabold text-white mb-8 tracking-tighter drop-shadow-[0_0_15px_rgba(0,0,255,0.8)] md:drop-shadow-[0_0_35px_rgba(0,0,255,0.8)] bg-clip-text"
-              >
-                CHERRY CLUB
-              </motion.h1>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="mt-8 sm:mt-6 md:mt-8"
-              >
-                <button
-                  onClick={() => setVideoModal(true)}
-                  className="bg-white/20 backdrop-blur-sm text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-base sm:text-lg font-medium hover:bg-white/30 transition-all hover:scale-105 border border-white/30 mb-8 sm:mb-12"
-                >
-                  전체 동영상 보기
-                </button>
-              </motion.div>
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-                className="flex flex-col items-center"
-              >
-                <p className="text-white text-lg mb-2">
-                  스크롤을 내려 더 알아보기
-                </p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-10 w-10 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                  />
-                </svg>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* 배경 비디오 */}
+    <>
+      <Intro />
       <AnimatePresence>
-        {videoDarken && (
+        <motion.section
+          ref={ref}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, delay: 3.5, ease: "easeIn" }}
+          className="relative h-screen overflow-hidden flex items-center justify-center"
+        >
+          {/* 콘텐츠 영역 */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="absolute inset-0 bg-black z-0"
-          />
-        )}
-      </AnimatePresence>
-      <video
-        src={videoSrc}
-        className="absolute inset-0 w-full h-full object-cover object-center z-[-1]"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-      />
-
-      {/* 비디오 모달 */}
-      <AnimatePresence>
-        {videoModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            onClick={() => setVideoModal(false)}
+            style={{ y, opacity }}
+            className="relative z-10 text-center px-4 max-w-4xl mx-auto"
           >
-            <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
-              transition={{ duration: 0.3 }}
-              className="relative w-full max-w-5xl aspect-video"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setVideoModal(false)}
-                className="absolute -top-12 right-0 text-white p-2 rounded-full hover:bg-white/10"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-              <video
-                src="/videos/title_full.mp4"
-                className="w-full h-full rounded-lg shadow-2xl"
-                autoPlay
-                controls
-                playsInline
-                preload="auto"
-              />
-            </motion.div>
+            <AnimatePresence>
+              {
+                <>
+                  <motion.h1
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1.2, delay: 4, ease: "easeOut" }}
+                    className="text-5xl sm:text-6xl md:text-9xl font-extrabold text-white mb-8 tracking-tighter drop-shadow-[0_0_15px_rgba(0,0,255,0.8)] md:drop-shadow-[0_0_35px_rgba(0,0,255,0.8)] bg-clip-text"
+                  >
+                    CHERRY CLUB
+                  </motion.h1>
+                </>
+              }
+            </AnimatePresence>
           </motion.div>
-        )}
+
+          {/* 어두운 오버레이 - 항상 표시 */}
+          <div className="absolute inset-0 bg-black bg-opacity-50 z-0" />
+
+          {/* Swiper 이미지 슬라이더 */}
+          <div className="absolute inset-0 z-[-1]">
+            {!isLoading && heroImages.length > 0 && (
+              <Swiper
+                modules={[Autoplay, EffectFade]}
+                effect="fade"
+                autoplay={{
+                  delay: 5000,
+                  disableOnInteraction: false,
+                }}
+                speed={1500}
+                loop={true}
+                className="w-full h-full"
+              >
+                {heroImages.map((image, index) => (
+                  <SwiperSlide key={index} className="w-full h-full">
+                    <motion.div
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 3, delay: 3.5, ease: "easeOut" }}
+                      className="w-full h-full"
+                    >
+                      <Image
+                        src={image}
+                        alt={`Image ${index + 1}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover"
+                        loading="lazy"
+                        placeholder="blur"
+                        blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjY2NjYyIvPjwvc3ZnPg=="
+                      />
+                    </motion.div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
+          </div>
+        </motion.section>
       </AnimatePresence>
-    </section>
+    </>
   );
 }

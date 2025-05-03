@@ -22,6 +22,12 @@ export default function HeroTitleSection() {
   // 타이틀과 어둡게 처리를 처음부터 표시
   const [heroImages, setHeroImages] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 클라이언트 측에서만 실행되도록 마운트 상태 설정
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -33,6 +39,8 @@ export default function HeroTitleSection() {
 
   // API에서 이미지 목록 가져오기
   useEffect(() => {
+    if (!isMounted) return;
+
     const fetchImages = async () => {
       try {
         setIsLoading(true);
@@ -57,7 +65,9 @@ export default function HeroTitleSection() {
     };
 
     fetchImages();
-  }, []);
+  }, [isMounted]);
+
+  if (!isMounted) return null;
 
   return (
     <>
@@ -69,11 +79,13 @@ export default function HeroTitleSection() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5, delay: 3.5, ease: "easeIn" }}
           className="relative h-screen overflow-hidden flex items-center justify-center"
+          suppressHydrationWarning
         >
           {/* 콘텐츠 영역 */}
           <motion.div
             style={{ y, opacity }}
             className="relative z-10 text-center px-4 max-w-4xl mx-auto"
+            suppressHydrationWarning
           >
             <AnimatePresence>
               {
@@ -83,6 +95,7 @@ export default function HeroTitleSection() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1.2, delay: 4, ease: "easeOut" }}
                     className="text-5xl sm:text-6xl md:text-9xl font-extrabold text-white mb-8 tracking-tighter drop-shadow-[0_0_15px_rgba(0,0,255,0.8)] md:drop-shadow-[0_0_35px_rgba(0,0,255,0.8)] bg-clip-text"
+                    suppressHydrationWarning
                   >
                     CHERRY CLUB
                   </motion.h1>
@@ -115,6 +128,7 @@ export default function HeroTitleSection() {
                       animate={{ scale: 1 }}
                       transition={{ duration: 3, delay: 3.5, ease: "easeOut" }}
                       className="w-full h-full"
+                      suppressHydrationWarning
                     >
                       <Image
                         src={image}

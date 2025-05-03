@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
-import ClientLayout from "../shared/components/layout/ClientLayout";
+import Header from "../shared/components/layout/Header";
+import JoinButton from "../shared/components/layout/JoinButton";
+import Footer from "../shared/components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -75,8 +77,13 @@ export default function RootLayout({
     <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
+        suppressHydrationWarning
       >
-        <ClientLayout>{children}</ClientLayout>
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <JoinButton />
+        <Footer />
+
         <Analytics />
       </body>
     </html>

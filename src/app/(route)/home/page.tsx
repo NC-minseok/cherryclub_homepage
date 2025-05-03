@@ -7,7 +7,10 @@ import CTASection from "./_components/CTASection";
 
 export default function Home() {
   return (
-    <div className="min-h-screen text-gray-800 overflow-hidden">
+    <div
+      className="min-h-screen text-gray-800 overflow-hidden"
+      suppressHydrationWarning
+    >
       <HeroTitleSection />
       <IntroductionSection />
       <StatusSection />

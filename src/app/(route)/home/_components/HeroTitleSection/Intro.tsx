@@ -7,19 +7,22 @@ import { useRouter } from "next/navigation";
 export default function IntroPage() {
   const router = useRouter();
   const [welcomeStep, setWelcomeStep] = useState(1);
-  const [showTransition, setShowTransition] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [isFading, setIsFading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 클라이언트에서만 실행되도록 마운트 상태 추가
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!isMounted) return;
+
     // 환영 메시지 단계별 표시
     const step1Timer = setTimeout(() => {
       setWelcomeStep(2);
     }, 1000);
-
-    const step2Timer = setTimeout(() => {
-      setShowTransition(true);
-    }, 3000);
 
     const fadeTimer = setTimeout(() => {
       setIsFading(true);
@@ -31,13 +34,13 @@ export default function IntroPage() {
 
     return () => {
       clearTimeout(step1Timer);
-      clearTimeout(step2Timer);
       clearTimeout(fadeTimer);
       clearTimeout(completeTimer);
     };
-  }, [router]);
+  }, [isMounted, router]);
 
-  if (isComplete) return null;
+  // 클라이언트 측에서만 렌더링하기 위한 조건부 반환
+  if (!isMounted || isComplete) return null;
 
   return (
     <motion.div
@@ -45,6 +48,7 @@ export default function IntroPage() {
       initial={{ opacity: 1 }}
       animate={{ opacity: isFading ? 0 : 1 }}
       transition={{ duration: 0.7, ease: "easeInOut" }}
+      suppressHydrationWarning
     >
       {/* 로고 애니메이션 */}
       <motion.div
@@ -65,6 +69,7 @@ export default function IntroPage() {
             height="600"
             viewBox="0 0 200 200"
             className="text-red-600/20"
+            suppressHydrationWarning
           >
             <path
               fill="currentColor"
@@ -84,6 +89,7 @@ export default function IntroPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.6 }}
+            suppressHydrationWarning
           >
             <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight drop-shadow-[0_0_15px_rgba(0,0,255,0.8)] md:drop-shadow-[0_0_35px_rgba(0,0,255,0.8)]">
               오늘은 캠퍼스로!
@@ -99,6 +105,7 @@ export default function IntroPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.6 }}
+            suppressHydrationWarning
           >
             <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight drop-shadow-[0_0_15px_rgba(0,0,255,0.8)] md:drop-shadow-[0_0_35px_rgba(0,0,255,0.8)]">
               내일은 열방으로!

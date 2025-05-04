@@ -16,6 +16,51 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/autoplay";
 import Intro from "./Intro";
+import { getCookie } from "cookies-next";
+
+// 애니메이션 상수
+const ANIMATION_CONSTANTS = {
+  SECTION_FADE_IN: {
+    duration: 1.5,
+    delay: 3.5,
+    ease: "easeIn",
+  },
+  SECTION_FADE_IN_DIRECT: {
+    duration: 1,
+    delay: 0,
+    ease: "easeIn",
+  },
+  TITLE_FADE_IN: {
+    duration: 1.2,
+    delay: 4,
+    ease: "easeOut",
+  },
+  TITLE_FADE_IN_DIRECT: {
+    duration: 1.2,
+    delay: 0.2,
+    ease: "easeOut",
+  },
+  IMAGE_SCALE: {
+    duration: 3,
+    delay: 3.5,
+    ease: "easeOut",
+  },
+  IMAGE_SCALE_DIRECT: {
+    duration: 2,
+    delay: 0,
+    ease: "easeOut",
+  },
+  SWIPER: {
+    delay: 5000,
+    speed: 1500,
+  },
+};
+
+// 기본 이미지 경로
+const DEFAULT_HERO_IMAGES = [
+  "/images/home/HeroSession/DSC01527.jpg",
+  "/images/home/HeroSession/DSC04061.JPG",
+];
 
 export default function HeroTitleSection() {
   const ref = useRef(null);
@@ -55,10 +100,7 @@ export default function HeroTitleSection() {
       } catch (error) {
         console.error("이미지 로딩 중 오류:", error);
         // 오류 발생 시 기본 이미지 설정
-        setHeroImages([
-          "/images/home/HeroSession/DSC01527.jpg",
-          "/images/home/HeroSession/DSC04061.JPG",
-        ]);
+        setHeroImages(DEFAULT_HERO_IMAGES);
       } finally {
         setIsLoading(false);
       }
@@ -69,15 +111,28 @@ export default function HeroTitleSection() {
 
   if (!isMounted) return null;
 
+  const isLoaded = getCookie("isLoaded");
+
+  // isLoaded 상태에 따라 애니메이션 설정 선택
+  const sectionAnimation = isLoaded
+    ? ANIMATION_CONSTANTS.SECTION_FADE_IN_DIRECT
+    : ANIMATION_CONSTANTS.SECTION_FADE_IN;
+  const titleAnimation = isLoaded
+    ? ANIMATION_CONSTANTS.TITLE_FADE_IN_DIRECT
+    : ANIMATION_CONSTANTS.TITLE_FADE_IN;
+  const imageAnimation = isLoaded
+    ? ANIMATION_CONSTANTS.IMAGE_SCALE_DIRECT
+    : ANIMATION_CONSTANTS.IMAGE_SCALE;
+
   return (
     <>
-      <Intro />
+      {!isLoaded && <Intro />}
       <AnimatePresence>
         <motion.section
           ref={ref}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 3.5, ease: "easeIn" }}
+          transition={sectionAnimation}
           className="relative h-screen overflow-hidden flex items-center justify-center"
           suppressHydrationWarning
         >
@@ -88,19 +143,15 @@ export default function HeroTitleSection() {
             suppressHydrationWarning
           >
             <AnimatePresence>
-              {
-                <>
-                  <motion.h1
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 1.2, delay: 4, ease: "easeOut" }}
-                    className="text-5xl sm:text-6xl md:text-9xl font-extrabold text-white mb-8 tracking-tighter drop-shadow-[0_0_15px_rgba(0,0,255,0.8)] md:drop-shadow-[0_0_35px_rgba(0,0,255,0.8)] bg-clip-text"
-                    suppressHydrationWarning
-                  >
-                    CHERRY CLUB
-                  </motion.h1>
-                </>
-              }
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={titleAnimation}
+                className="text-5xl sm:text-6xl md:text-9xl font-extrabold text-white mb-8 tracking-tighter drop-shadow-[0_0_15px_rgba(0,0,255,0.8)] md:drop-shadow-[0_0_35px_rgba(0,0,255,0.8)] bg-clip-text"
+                suppressHydrationWarning
+              >
+                CHERRY CLUB
+              </motion.h1>
             </AnimatePresence>
           </motion.div>
 
@@ -114,10 +165,10 @@ export default function HeroTitleSection() {
                 modules={[Autoplay, EffectFade]}
                 effect="fade"
                 autoplay={{
-                  delay: 5000,
+                  delay: ANIMATION_CONSTANTS.SWIPER.delay,
                   disableOnInteraction: false,
                 }}
-                speed={1500}
+                speed={ANIMATION_CONSTANTS.SWIPER.speed}
                 loop={true}
                 className="w-full h-full"
               >
@@ -126,7 +177,7 @@ export default function HeroTitleSection() {
                     <motion.div
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}
-                      transition={{ duration: 3, delay: 3.5, ease: "easeOut" }}
+                      transition={imageAnimation}
                       className="w-full h-full"
                       suppressHydrationWarning
                     >

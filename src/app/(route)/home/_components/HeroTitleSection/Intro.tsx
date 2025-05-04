@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
 
 export default function IntroPage() {
   const router = useRouter();
@@ -30,6 +31,8 @@ export default function IntroPage() {
 
     const completeTimer = setTimeout(() => {
       setIsComplete(true);
+      // Intro가 완료되면 isLoaded 쿠키를 true로 설정
+      setCookie("isLoaded", "true", { maxAge: 60 * 10 }); // 10분 동안 유효
     }, 4000);
 
     return () => {

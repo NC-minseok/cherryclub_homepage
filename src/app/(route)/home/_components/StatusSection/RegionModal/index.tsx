@@ -2,9 +2,14 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { RegionModalProps } from "./types";
 import { StatsSummary } from "./StatsSummary";
 import { UniversitySearch } from "./UniversitySearch";
+import { RegionData } from "../../../_types/regionData";
+
+interface RegionModalProps {
+  selectedRegion: RegionData | null;
+  onClose: () => void;
+}
 
 export default function RegionModal({
   selectedRegion,

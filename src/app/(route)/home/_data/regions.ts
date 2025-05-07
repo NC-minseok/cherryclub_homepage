@@ -82,7 +82,7 @@ const FALLBACK_REGIONS: RegionData[] = [
     y: 82,
     count: 0,
     universities: [],
-    leader: "이재하",
+    leader: "",
   },
 ];
 

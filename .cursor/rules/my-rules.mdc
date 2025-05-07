@@ -692,3 +692,22 @@ function ItemEditModal({ open, items, recommendedItems, onConfirm, onClose }) {
 
 // The intermediate ItemEditBody component is eliminated, reducing coupling.
 ```
+
+1. 테스트 작성 지침 추가해줘
+### 테스트 작성 지침
+- 각 컴포넌트는 최소한 다음 테스트를 포함해야 합니다:
+  - 컴포넌트가 올바르게 렌더링되는지 확인
+  - props에 따라 UI가 올바르게 변경되는지 확인
+  - 사용자 상호작용에 올바르게 반응하는지 확인
+
+2. 문서화 작성 지침 추가해줘
+## 문서화
+
+### 컴포넌트 문서화
+- 모든 컴포넌트는 JSDoc 형식의 주석으로 문서화합니다.
+- 컴포넌트의 목적과 사용 방법을 명확히 설명합니다.
+- 모든 props에 대한 설명을 제공합니다.
+- 예시 코드를 포함하여 사용 방법을 보여줍니다.
+
+
+3. 진행되는 모든 사항을 커서룰에서 어떤 부분 참고했는지 한글로 설명하면서 코드 작성해줘.

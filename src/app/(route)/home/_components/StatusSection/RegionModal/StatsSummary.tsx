@@ -15,40 +15,44 @@ export function StatsSummary({
   membersCount,
 }: StatsSummaryProps) {
   return (
-    <div className="grid grid-cols-3 gap-2 mb-3">
-      <motion.div
-        className="col-span-1 flex flex-col items-center justify-center text-center bg-red-50 py-2 px-1 sm:p-3 rounded-lg border border-red-100"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.3 }}
-        whileHover={{ scale: 1.03 }}
-      >
-        <div className="flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 bg-red-100 rounded-full mb-1 sm:mb-2 shadow-sm">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 sm:h-6 sm:w-6 text-red-600"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-        <div className="text-[10px] sm:text-xs font-bold text-red-700">
-          지부장
-        </div>
+    <div
+      className={`grid ${leader ? "grid-cols-3" : "grid-cols-2"} gap-2 mb-3`}
+    >
+      {leader && (
         <motion.div
-          className="text-xs sm:text-base font-bold text-red-600 mt-1"
-          initial={{ scale: 0.5 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.5, type: "spring" }}
+          className="col-span-1 flex flex-col items-center justify-center text-center bg-red-50 py-2 px-1 sm:p-3 rounded-lg border border-red-100"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.3 }}
+          whileHover={{ scale: 1.03 }}
         >
-          {Masker.maskName(leader)}
+          <div className="flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 bg-red-100 rounded-full mb-1 sm:mb-2 shadow-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 sm:h-6 sm:w-6 text-red-600"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <div className="text-[10px] sm:text-xs font-bold text-red-700">
+            지부장
+          </div>
+          <motion.div
+            className="text-xs sm:text-base font-bold text-red-600 mt-1"
+            initial={{ scale: 0.5 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.5, type: "spring" }}
+          >
+            {Masker.maskName(leader)}
+          </motion.div>
         </motion.div>
-      </motion.div>
+      )}
 
       <motion.div
         className="col-span-1 flex flex-col items-center justify-center text-center bg-blue-50 py-2 px-1 sm:p-3 rounded-lg border border-blue-100"

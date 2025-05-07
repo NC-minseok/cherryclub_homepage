@@ -20,5 +20,5 @@ export default function useFitty(
         fittyInstance.unsubscribe();
       };
     }
-  }, []);
+  }, [titleRef]);
 }

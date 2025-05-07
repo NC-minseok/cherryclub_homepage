@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { RegionData } from "../../_types/regionData";
-import RegionPopup from "./RegionPopup";
+import RegionModal from "./RegionModal";
 
 // 지도 컨테이너 컴포넌트
 interface MapContainerProps {
@@ -155,7 +155,7 @@ export default function MapContainer({
         ))}
 
         {/* 지역 팝업 정보 */}
-        <RegionPopup selectedRegion={selectedRegion} onClose={onClosePopup} />
+        <RegionModal selectedRegion={selectedRegion} onClose={onClosePopup} />
 
         {/* 지도 위 그래디언트 오버레이 (애플 스타일) */}
         <div className="absolute inset-0 pointer-events-none">

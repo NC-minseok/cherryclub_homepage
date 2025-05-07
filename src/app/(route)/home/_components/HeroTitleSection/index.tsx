@@ -56,6 +56,25 @@ const ANIMATION_CONSTANTS = {
   },
 };
 
+// 인트로 애니메이션 타이밍 상수
+const INTRO_TIMING = {
+  STEP_1_DURATION: 1000, // 첫 번째 단계 지속 시간 (ms)
+  FADE_START: 3300, // 페이드 아웃 시작 시간 (ms)
+  COMPLETE_TIME: 4000, // 인트로 완료 시간 (ms)
+  FADE_OUT_DURATION: 700, // 페이드 아웃 애니메이션 지속 시간 (ms)
+  COOKIE_MAX_AGE: 600, // 쿠키 유지 시간 (10분, 초 단위)
+};
+
+// SVG 애니메이션 상수
+const SVG_ANIMATION = {
+  WIDTH: 600,
+  HEIGHT: 600,
+  VIEW_BOX: "0 0 200 200",
+  DURATION: 10,
+  SCALE: [1, 1.2, 1],
+  ROTATE: [0, 5, 0, -5, 0],
+};
+
 export default function HeroTitleSection() {
   const ref = useRef(null);
   const [isMounted, setIsMounted] = useState(false);
@@ -85,22 +104,22 @@ export default function HeroTitleSection() {
     // 환영 메시지 단계별 표시
     const step1Timer = setTimeout(() => {
       setWelcomeStep(2);
-    }, 1000);
+    }, INTRO_TIMING.STEP_1_DURATION);
 
     const fadeTimer = setTimeout(() => {
       setIsFadingIntro(true);
-    }, 3300);
+    }, INTRO_TIMING.FADE_START);
 
     const completeTimer = setTimeout(() => {
       // 인트로 애니메이션 완료 후 메인 콘텐츠 표시
       setIsLoaded(true);
-      setCookie("isLoaded", "true", { maxAge: 60 * 10 }); // 10분 동안 유효
+      setCookie("isLoaded", "true", { maxAge: INTRO_TIMING.COOKIE_MAX_AGE }); // 10분 동안 유효
 
       // 인트로가 완전히 페이드 아웃된 후 인트로를 안 보이게 처리
       setTimeout(() => {
         setShowIntro(false);
-      }, 700); // 페이드 아웃 애니메이션 시간에 맞춤
-    }, 4000);
+      }, INTRO_TIMING.FADE_OUT_DURATION); // 페이드 아웃 애니메이션 시간에 맞춤
+    }, INTRO_TIMING.COMPLETE_TIME);
 
     return () => {
       clearTimeout(step1Timer);
@@ -139,7 +158,10 @@ export default function HeroTitleSection() {
           className="fixed inset-0 overflow-hidden bg-black flex items-center justify-center z-50"
           initial={{ opacity: 1 }}
           animate={{ opacity: isFadingIntro ? 0 : 1 }}
-          transition={{ duration: 0.7, ease: "easeInOut" }}
+          transition={{
+            duration: INTRO_TIMING.FADE_OUT_DURATION / 1000,
+            ease: "easeInOut",
+          }}
           suppressHydrationWarning
         >
           {/* 로고 애니메이션 */}
@@ -151,15 +173,18 @@ export default function HeroTitleSection() {
             <motion.div
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10"
               animate={{
-                scale: [1, 1.2, 1],
-                rotate: [0, 5, 0, -5, 0],
+                scale: SVG_ANIMATION.SCALE,
+                rotate: SVG_ANIMATION.ROTATE,
               }}
-              transition={{ duration: 10, repeat: Infinity }}
+              transition={{
+                duration: SVG_ANIMATION.DURATION,
+                repeat: Infinity,
+              }}
             >
               <svg
-                width="600"
-                height="600"
-                viewBox="0 0 200 200"
+                width={SVG_ANIMATION.WIDTH}
+                height={SVG_ANIMATION.HEIGHT}
+                viewBox={SVG_ANIMATION.VIEW_BOX}
                 className="text-red-600/20"
                 suppressHydrationWarning
               >

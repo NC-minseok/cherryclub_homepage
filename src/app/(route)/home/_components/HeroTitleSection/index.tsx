@@ -17,6 +17,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/autoplay";
 import Intro from "./Intro";
 import { getCookie } from "cookies-next";
+import useHeroImages from "../../_hook/useHeroImages";
 
 // 애니메이션 상수
 const ANIMATION_CONSTANTS = {
@@ -56,18 +57,10 @@ const ANIMATION_CONSTANTS = {
   },
 };
 
-// 기본 이미지 경로
-const DEFAULT_HERO_IMAGES = [
-  "/images/home/HeroSession/DSC01527.jpg",
-  "/images/home/HeroSession/DSC04061.JPG",
-];
-
 export default function HeroTitleSection() {
   const ref = useRef(null);
-  // 타이틀과 어둡게 처리를 처음부터 표시
-  const [heroImages, setHeroImages] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const { heroImages, isLoading } = useHeroImages();
 
   // 클라이언트 측에서만 실행되도록 마운트 상태 설정
   useEffect(() => {
@@ -81,33 +74,6 @@ export default function HeroTitleSection() {
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
-  // API에서 이미지 목록 가져오기
-  useEffect(() => {
-    if (!isMounted) return;
-
-    const fetchImages = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch("/api/get-hero-images");
-
-        if (!response.ok) {
-          throw new Error("이미지를 가져오는데 실패했습니다");
-        }
-
-        const images = await response.json();
-        setHeroImages(images);
-      } catch (error) {
-        console.error("이미지 로딩 중 오류:", error);
-        // 오류 발생 시 기본 이미지 설정
-        setHeroImages(DEFAULT_HERO_IMAGES);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchImages();
-  }, [isMounted]);
 
   if (!isMounted) return null;
 

@@ -71,8 +71,16 @@ function UniversityAutoComplete({
 
   // 외부 value 변경 시 inputValue 동기화
   useEffect(() => {
-    setInputValue(value || "");
-  }, [value]);
+    if (isManual) {
+      if (value?.startsWith("(기타) ")) {
+        setInputValue(value.slice(5));
+      } else {
+        setInputValue("");
+      }
+    } else {
+      setInputValue(value || "");
+    }
+  }, [value, isManual]);
 
   // 옵션 선택 시
   const handleSelect = (name: string) => {
@@ -157,8 +165,13 @@ function UniversityAutoComplete({
             placeholder="학교명을 직접 입력하세요"
             value={inputValue}
             onChange={(e) => {
-              setInputValue(e.target.value);
-              onChange(e.target.value);
+              const prefix = "(기타) ";
+              setInputValue(e.target.value); // input에는 prefix 없는 값만 보여줌
+              if (e.target.value.trim() === "") {
+                onChange("");
+              } else {
+                onChange(prefix + e.target.value);
+              }
             }}
             autoFocus
           />

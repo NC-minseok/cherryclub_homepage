@@ -235,12 +235,7 @@ const JoinFormSection: React.FC = () => {
     formState: { errors },
     reset,
     control,
-    setValue,
-  } = useForm<FormData>({
-    defaultValues: {
-      birthday: "2000-01-01", // 생년월일 초기값을 2000-01-01로 설정
-    },
-  });
+  } = useForm<FormData>();
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -282,10 +277,6 @@ const JoinFormSection: React.FC = () => {
       }
       setIsSubmitted(true);
       reset();
-    } catch (e) {
-      setSubmitError(
-        "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
-      );
     } finally {
       setIsSubmitting(false);
     }

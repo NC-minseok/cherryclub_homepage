@@ -8,10 +8,13 @@ export async function GET() {
     // 대학교 데이터와 지역별 인원수 데이터를 함께 가져옴
     const [universitiesRows] = await connection.query(
       `SELECT DISTINCT 
-      region, 
-      university 
-      FROM users
-      WHERE region != '0' AND region != '졸업'`
+      u.region, 
+      u.university,
+      univ.latitude,
+      univ.longitude
+      FROM users u
+      LEFT JOIN Universities univ ON u.university = univ.name
+      WHERE u.region != '0' AND u.region != '졸업'`
     );
 
     const [membersRows] = await connection.query(
@@ -29,6 +32,8 @@ export async function GET() {
     const universities = universitiesRows as Array<{
       region: string;
       university: string;
+      latitude: number;
+      longitude: number;
     }>;
 
     const members = membersRows as Array<{
@@ -41,6 +46,8 @@ export async function GET() {
       universities: universities.map((uni) => ({
         region: uni.region,
         university: uni.university,
+        latitude: uni.latitude,
+        longitude: uni.longitude,
       })),
       memberCounts: members.map((member) => ({
         region: member.region,

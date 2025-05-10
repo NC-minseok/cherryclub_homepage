@@ -27,16 +27,11 @@ const Header = () => {
     { name: "캠퍼스 사역", path: "/campus" },
     { name: "전체/지역모임", path: "/gatherings" },
     { name: "대외사역", path: "/external" },
-    { name: "동아리 가입신청", path: "/join" },
   ];
 
   return (
     <header
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-gray-900  backdrop-blur-md shadow-sm py-2"
-          : "bg-transparent py-4"
-      }`}
+      className={`fixed w-full z-50 transition-all duration-300 ${"bg-gray-900  backdrop-blur-md shadow-sm py-2"}`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <nav className="flex items-center justify-between">

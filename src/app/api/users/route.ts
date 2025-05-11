@@ -26,7 +26,10 @@ export async function GET(request: Request) {
     }
     const payload = verifyJwt(token);
     if (!payload) {
-      return NextResponse.json({ error: "권한이 없습니다." }, { status: 403 });
+      return NextResponse.json(
+        { error: "인증토큰이 만료되었습니다." },
+        { status: 401 }
+      );
     }
 
     const connection = await pool.getConnection();
@@ -106,7 +109,10 @@ export async function PATCH(request: Request) {
     }
     const payload = verifyJwt(token);
     if (!payload) {
-      return NextResponse.json({ error: "권한이 없습니다." }, { status: 403 });
+      return NextResponse.json(
+        { error: "인증토큰이 만료되었습니다." },
+        { status: 401 }
+      );
     }
 
     // 2. 요청 파싱 및 유효성 검사

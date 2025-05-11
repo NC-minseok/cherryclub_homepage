@@ -23,7 +23,6 @@ import { pool } from "../../utils/db";
  * // 응답: { exists: true } 또는 { exists: false }
  */
 
-0
 export async function POST(req: NextRequest) {
   const DUPLICATE_PHONE_ERROR_CODE = "ER_DUP_ENTRY";
   const DUPLICATE_PHONE_STATUS = 400;

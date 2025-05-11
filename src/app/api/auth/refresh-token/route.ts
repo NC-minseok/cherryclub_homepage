@@ -46,6 +46,7 @@ export async function POST(request: Request) {
     connection.release();
     return NextResponse.json({ success: true, token });
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "토큰 재발급 실패" }, { status: 500 });
   }
 }

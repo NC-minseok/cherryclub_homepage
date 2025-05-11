@@ -65,6 +65,7 @@ export async function POST(request: Request) {
     }
 
     // 로그인 성공 (user 정보에서 비밀번호 등 민감 정보 제외)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userInfo } = user;
     // JWT 토큰 발급 (id, role/authority 등 주요 정보 포함)
     const token = signJwt({ id: userInfo.id, role: userInfo.authority });

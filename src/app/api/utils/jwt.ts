@@ -38,6 +38,7 @@ export function verifyJwt(token: string): any | null {
   try {
     return jwt.verify(token, JWT_SECRET_KEY);
   } catch (err) {
+    console.error(err);
     return null;
   }
 }

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { pool } from "../utils/db";
 import { verifyJwt } from "../utils/jwt";
-import { log } from "console";
 
 /**
  * @function GET
@@ -137,7 +136,7 @@ export async function PATCH(request: Request) {
       // 허용된 필드만 업데이트
       const setClauses = Object.entries(fields)
         .filter(([key]) => UPDATE_FIELDS.includes(key))
-        .map(([key, value]) => `${key} = ?`);
+        .map(([key]) => `${key} = ?`);
       const values = Object.entries(fields)
         .filter(([key]) => UPDATE_FIELDS.includes(key))
         .map(([, value]) => value);

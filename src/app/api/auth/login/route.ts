@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { pool } from "../../utils/db";
 import { signJwt, generateRefreshToken } from "../../utils/jwt";
+import { RowDataPacket } from "mysql2";
 
 /**
  * 로그인 API
@@ -73,10 +74,38 @@ export async function POST(request: Request) {
       refreshToken,
       userInfo.id,
     ]);
+
+    let leaderName = "";
+    if (userInfo.university) {
+      const [leaderRows] = await connection.query<RowDataPacket[]>(
+        `SELECT MAX(CASE WHEN u.isCampusLeader = 1 THEN u.name ELSE NULL END) AS leader_name
+         FROM Universities univ
+         LEFT JOIN users u ON u.university = univ.name
+         WHERE univ.name = ?
+         GROUP BY univ.name
+         HAVING leader_name IS NOT NULL`,
+        [userInfo.university]
+      );
+      const leaderRow = (leaderRows as RowDataPacket[])[0];
+      if (leaderRow && leaderRow.leader_name) {
+        leaderName = leaderRow.leader_name as string;
+      }
+    }
+
     connection.release();
+
+    console.log({
+      success: true,
+      user: userInfo,
+      campus_leader: leaderName,
+      token,
+      refreshToken,
+    });
+
     return NextResponse.json({
       success: true,
       user: userInfo,
+      campus_leader: leaderName,
       token,
       refreshToken,
     });

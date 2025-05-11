@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 /**
  * JWT 비밀키 (환경변수에서 관리, 미설정 시 에러 발생)
@@ -39,4 +40,14 @@ export function verifyJwt(token: string): any | null {
   } catch (err) {
     return null;
   }
+}
+
+/**
+ * 리프레시 토큰을 생성합니다.
+ * @returns {string} 랜덤 리프레시 토큰
+ * @example
+ *   const refreshToken = generateRefreshToken();
+ */
+export function generateRefreshToken(): string {
+  return crypto.randomBytes(32).toString("hex");
 }

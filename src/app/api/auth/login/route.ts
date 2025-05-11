@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { pool } from "../../utils/db";
-import { signJwt } from "../../utils/jwt";
+import { signJwt, generateRefreshToken } from "../../utils/jwt";
 
 /**
  * 로그인 API
  * 전화번호(하이픈 유무 상관없음)와 비밀번호로 로그인합니다.
  * @param request - { phone: string, password: string } JSON body
- * @returns { success: true, user: { ... }, token: string } 또는 { error: string }
+ * @returns { success: true, user: { ... }, token: string, refreshToken: string } 또는 { error: string }
  * @example
  * fetch('/api/auth/login', {
  *   method: 'POST',
@@ -17,6 +17,7 @@ import { signJwt } from "../../utils/jwt";
  *   .then(data => {
  *     if (data.success) {
  *       localStorage.setItem('token', data.token);
+ *       localStorage.setItem('refreshToken', data.refreshToken);
  *     }
  *   });
  */
@@ -66,8 +67,19 @@ export async function POST(request: Request) {
     const { password: _, ...userInfo } = user;
     // JWT 토큰 발급 (id, role/authority 등 주요 정보 포함)
     const token = signJwt({ id: userInfo.id, role: userInfo.authority });
+    // 리프레시 토큰 발급 및 DB 저장
+    const refreshToken = generateRefreshToken();
+    await connection.query("UPDATE users SET refresh_token = ? WHERE id = ?", [
+      refreshToken,
+      userInfo.id,
+    ]);
     connection.release();
-    return NextResponse.json({ success: true, user: userInfo, token });
+    return NextResponse.json({
+      success: true,
+      user: userInfo,
+      token,
+      refreshToken,
+    });
   } catch (error) {
     console.error("로그인 오류:", error);
     return NextResponse.json(

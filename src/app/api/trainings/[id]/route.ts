@@ -136,3 +136,76 @@ export async function PUT(request: NextRequest) {
     );
   }
 }
+
+/**
+ * @api 트레이닝 리소스 삭제 API (DELETE)
+ * @description
+ *  - type과 id를 받아 해당 row를 삭제합니다.
+ *  - JWT 인증 필요
+ *
+ * @test
+ *  - 인증 없을 때 401 반환
+ *  - 정상 삭제 동작
+ *  - 필수값 누락 시 400 반환
+ *  - 잘못된 type 시 400 반환
+ *
+ * @param request - DELETE 요청 (쿼리스트링: type, URL 파라미터: id)
+ * @returns { success: true } 또는 { error: string }
+ * @example
+ * fetch('/api/trainings/123?type=meditation', {
+ *   method: 'DELETE',
+ *   headers: { Authorization: 'Bearer <token>' }
+ * })
+ *   .then(res => res.json())
+ *   .then(data => { ... });
+ */
+export async function DELETE(request: NextRequest) {
+  // URL에서 id 추출
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
+  const { searchParams } = url;
+  const type = searchParams.get("type");
+
+  // 인증 체크
+  const authHeader = request.headers.get("authorization");
+  const token = authHeader?.split(" ")[1];
+  if (!token || !verifyJwt(token)) {
+    return NextResponse.json({ error: "인증 필요" }, { status: 401 });
+  }
+
+  if (!type || !id) {
+    return NextResponse.json(
+      { error: "type, id 파라미터 필요" },
+      { status: 400 }
+    );
+  }
+
+  const TABLES: { [key: string]: string } = {
+    meditation: "training_meditations",
+    reading: "training_readings",
+    prayer: "training_prayers",
+    soc: "training_socs",
+  };
+  if (!(type in TABLES)) {
+    return NextResponse.json(
+      { error: "type 파라미터 잘못됨" },
+      { status: 400 }
+    );
+  }
+
+  const query = `DELETE FROM ${TABLES[type]} WHERE id=?`;
+
+  let connection;
+  try {
+    connection = await pool.getConnection();
+    const [result] = await connection.query(query, [id]);
+    connection.release();
+    return NextResponse.json({ success: true, result });
+  } catch (error) {
+    if (connection) connection.release();
+    return NextResponse.json(
+      { error: "DB 오류", detail: (error as any).message },
+      { status: 500 }
+    );
+  }
+}

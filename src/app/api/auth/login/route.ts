@@ -1,17 +1,24 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { pool } from "../../utils/db";
+import { signJwt } from "../../utils/jwt";
 
 /**
  * 로그인 API
  * 전화번호(하이픈 유무 상관없음)와 비밀번호로 로그인합니다.
  * @param request - { phone: string, password: string } JSON body
- * @returns { success: true, user: { ... } } 또는 { error: string }
+ * @returns { success: true, user: { ... }, token: string } 또는 { error: string }
  * @example
  * fetch('/api/auth/login', {
  *   method: 'POST',
  *   body: JSON.stringify({ phone: '01000000000', password: 'pw1234' })
  * })
+ *   .then(res => res.json())
+ *   .then(data => {
+ *     if (data.success) {
+ *       localStorage.setItem('token', data.token);
+ *     }
+ *   });
  */
 
 export async function POST(request: Request) {
@@ -57,8 +64,10 @@ export async function POST(request: Request) {
 
     // 로그인 성공 (user 정보에서 비밀번호 등 민감 정보 제외)
     const { password: _, ...userInfo } = user;
+    // JWT 토큰 발급 (id, role/authority 등 주요 정보 포함)
+    const token = signJwt({ id: userInfo.id, role: userInfo.authority });
     connection.release();
-    return NextResponse.json({ success: true, user: userInfo });
+    return NextResponse.json({ success: true, user: userInfo, token });
   } catch (error) {
     console.error("로그인 오류:", error);
     return NextResponse.json(

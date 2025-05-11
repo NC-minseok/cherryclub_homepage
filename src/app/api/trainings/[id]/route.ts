@@ -125,9 +125,14 @@ export async function PUT(request: NextRequest) {
   let connection;
   try {
     connection = await pool.getConnection();
-    const [result] = await connection.query(query, paramsArr);
+    await connection.query(query, paramsArr);
+    // 최신 row 데이터 SELECT
+    const [rows] = (await connection.query(
+      `SELECT * FROM ${TABLES[type]} WHERE id=?`,
+      [id]
+    )) as any[];
     connection.release();
-    return NextResponse.json({ success: true, result });
+    return NextResponse.json({ success: true, data: rows[0] });
   } catch (error) {
     if (connection) connection.release();
     return NextResponse.json(

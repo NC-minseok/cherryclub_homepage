@@ -17,18 +17,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NCMN 동아리",
-  description: "NCMN 동아리 홍보 및 모집 홈페이지",
-  keywords: ["NCMN", "동아리", "리더십", "캠퍼스", "사역"],
+  title: "체리 동아리",
+  description: "체리 동아리 홍보 및 모집 홈페이지",
+  keywords: [
+    "체리동아리",
+    "체리 동아리",
+    "체인저 리더십",
+    "캠퍼스",
+    "ncmn 대학캠퍼스",
+  ],
   icons: {
     icon: "/logo.png",
   },
-  metadataBase: new URL("https://ncmn-club.com"),
+  metadataBase: new URL("https://cherryclub.kr"),
   openGraph: {
-    title: "NCMN 동아리",
-    description: "NCMN 동아리 홍보 및 모집 홈페이지",
-    url: "https://ncmn-club.com",
-    siteName: "NCMN 동아리",
+    title: "체리 동아리",
+    description: "체리 동아리 홍보 및 모집 홈페이지",
+    url: "https://cherryclub.kr",
+    siteName: "체리 동아리",
     images: [
       {
         url: "/og-image.png",
@@ -41,8 +47,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NCMN 동아리",
-    description: "NCMN 동아리 홍보 및 모집 홈페이지",
+    title: "체리 동아리",
+    description: "체리 동아리 홍보 및 모집 홈페이지",
   },
   robots: {
     index: true,
@@ -58,7 +64,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://ncmn-club.com",
+    canonical: "https://cherryclub.kr",
   },
 };
 
@@ -71,13 +77,13 @@ export default function RootLayout({
     <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
+        suppressHydrationWarning
       >
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <JoinButton />
-          <Footer />
-        </div>
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <JoinButton />
+        <Footer />
+
         <Analytics />
       </body>
     </html>

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { pool } from "../../utils/db";
 
 export async function GET() {
@@ -18,7 +18,7 @@ export async function GET() {
   COUNT(u.id) AS member_count,
   MAX(CASE WHEN u.isCampusLeader = 1 THEN u.name ELSE NULL END) AS leader_name
 FROM Universities univ
-LEFT JOIN users u ON u.university = univ.name
+LEFT JOIN users u ON u.universe_id = univ.id
 GROUP BY 
   univ.id,
   univ.name,
@@ -81,6 +81,49 @@ HAVING member_count != 0;`
     console.error("DB 검색 오류:", error);
     return NextResponse.json(
       { error: "지역 데이터 검색 실패" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const { id, is_cherry_club, ministry_status } = await request.json();
+
+    // 필수 파라미터 검증
+    if (!id) {
+      return NextResponse.json(
+        { error: "대학교 ID가 필요합니다" },
+        { status: 400 }
+      );
+    }
+
+    const connection = await pool.getConnection();
+
+    // 대학교 상태 업데이트
+    const [result] = await connection.query(
+      `UPDATE Universities 
+       SET is_cherry_club = ?, ministry_status = ? 
+       WHERE id = ?`,
+      [is_cherry_club, ministry_status, id]
+    );
+
+    connection.release();
+
+    // 쿼리 결과 확인
+    const updateResult = result as any;
+    if (updateResult.affectedRows === 0) {
+      return NextResponse.json(
+        { error: "해당 ID의 대학교를 찾을 수 없습니다" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("대학교 상태 업데이트 오류:", error);
+    return NextResponse.json(
+      { error: "대학교 상태 업데이트에 실패했습니다" },
       { status: 500 }
     );
   }

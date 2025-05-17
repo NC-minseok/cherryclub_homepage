@@ -33,9 +33,12 @@ export async function GET(request: Request) {
     }
 
     const connection = await pool.getConnection();
-    // password 컬럼을 제외한 모든 컬럼 조회
+    // university name을 조인하여 반환
     const [usersRows] = await connection.query(
-      `SELECT id, name, gender, authority, phone, birthday, region, university, major, student_id, grade, semester, enrollment_status, vision_camp_batch, ministry_status, is_cherry_club_member, group_number, created_at, isCampusLeader FROM users WHERE region != '0'`
+      `SELECT u.id, u.name, u.gender, u.authority, u.phone, u.birthday, u.region, univ.name AS university, u.major, u.student_id, u.grade, u.semester, u.enrollment_status, u.vision_camp_batch, u.ministry_status, u.is_cherry_club_member, u.group_number, u.created_at, u.isCampusLeader
+      FROM users u
+      LEFT JOIN Universities univ ON u.universe_id = univ.id
+      WHERE u.region != '0'`
     );
     connection.release();
 
@@ -48,7 +51,7 @@ export async function GET(request: Request) {
       phone: string;
       birthday: string;
       region: string;
-      university: string;
+      university: string; // university name
       major: string;
       student_id: string;
       grade: string;

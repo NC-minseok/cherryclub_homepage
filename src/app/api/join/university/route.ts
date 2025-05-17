@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 
     // 인덱스 활용을 위해 LIKE 검색 최적화
     const [rows] = await connection.query(
-      `SELECT name, location AS country 
+      `SELECT id, name, location AS country
        FROM Universities 
        WHERE name LIKE CONCAT('%', ?, '%')
        ORDER BY name ASC 
@@ -27,14 +27,14 @@ export async function GET(request: Request) {
 
     // 타입 캐스팅
     const universities = rows as Array<{
+      id: number;
       name: string;
       country: string;
-      latitude?: number;
-      longitude?: number;
     }>;
 
     // 클라이언트에 필요한 필드만 매핑
     const mappedData = universities.map((uni) => ({
+      id: uni.id,
       name: uni.name,
       country: uni.country,
     }));

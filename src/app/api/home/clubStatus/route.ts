@@ -9,11 +9,11 @@ export async function GET() {
     const [universitiesRows] = await connection.query(
       `SELECT DISTINCT 
       u.region, 
-      u.university,
+      univ.name AS university,
       univ.latitude,
       univ.longitude
       FROM users u
-      LEFT JOIN Universities univ ON u.university = univ.name
+      LEFT JOIN Universities univ ON u.universe_id = univ.id
       WHERE u.region != '0' AND u.region != '졸업'`
     );
 

@@ -128,3 +128,51 @@ export async function PUT(request: NextRequest) {
     );
   }
 }
+
+export async function POST(request: NextRequest) {
+  try {
+    const { userId } = await request.json();
+
+    // 필수 파라미터 검증
+    if (!userId) {
+      return NextResponse.json(
+        { error: "사용자 ID가 필요합니다" },
+        { status: 400 }
+      );
+    }
+
+    const connection = await pool.getConnection();
+
+    // 해당 사용자 정보 조회
+    const [userRows] = await connection.query(
+      `SELECT * FROM users WHERE id = ?`,
+      [userId]
+    );
+
+    // 사용자 존재 여부 확인
+    const userInfo = (userRows as any[])[0];
+    if (!userInfo) {
+      connection.release();
+      return NextResponse.json(
+        { error: "해당 ID의 사용자를 찾을 수 없습니다" },
+        { status: 404 }
+      );
+    }
+
+    // 같은 대학교(universe_id)를 가진 사용자들 조회
+    const [sameUniversityUsers] = await connection.query(
+      `SELECT id, name FROM users WHERE universe_id = ? AND id != ?`,
+      [userInfo.universe_id, userId]
+    );
+
+    connection.release();
+
+    return NextResponse.json((sameUniversityUsers as any[])[0]);
+  } catch (error) {
+    console.error("사용자 및 대학교 정보 조회 오류:", error);
+    return NextResponse.json(
+      { error: "사용자 및 대학교 정보 조회에 실패했습니다" },
+      { status: 500 }
+    );
+  }
+}

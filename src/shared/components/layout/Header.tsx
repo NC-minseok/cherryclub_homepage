@@ -28,7 +28,7 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-1 lg:space-x-2">
+          {/* <div className="hidden md:flex space-x-1 lg:space-x-2">
             {navItems.map((item, index) => (
               <Link
                 key={index}
@@ -42,10 +42,10 @@ const Header = () => {
                 {item.name}
               </Link>
             ))}
-          </div>
+          </div> */}
 
           {/* Mobile Menu Button */}
-          <button
+          {/* <button
             className="md:hidden flex items-center"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
@@ -72,7 +72,7 @@ const Header = () => {
                 />
               )}
             </svg>
-          </button>
+          </button> */}
         </nav>
 
         {/* Mobile Navigation */}

@@ -22,7 +22,7 @@ export const FALLBACK_REGIONS: RegionData[] = [
   },
   {
     id: 3,
-    name: "강원",
+    name: "호남/제주/강원",
     x: 44,
     y: 16,
     count: 0,
@@ -40,7 +40,7 @@ export const FALLBACK_REGIONS: RegionData[] = [
   },
   {
     id: 5,
-    name: "호남",
+    name: "호남/제주/강원",
     x: 25,
     y: 60,
     count: 0,
@@ -58,7 +58,7 @@ export const FALLBACK_REGIONS: RegionData[] = [
   },
   {
     id: 7,
-    name: "창원/부산",
+    name: "부산/창원",
     x: 53,
     y: 57,
     count: 0,
@@ -67,7 +67,7 @@ export const FALLBACK_REGIONS: RegionData[] = [
   },
   {
     id: 8,
-    name: "제주",
+    name: "호남/제주/강원",
     x: 18,
     y: 87,
     count: 0,
@@ -88,13 +88,11 @@ export const FALLBACK_REGIONS: RegionData[] = [
 // 지역명 API 매핑
 export const REGION_MAPPING: Readonly<Record<string, string>> = {
   서울: "서울",
-  "인천/경기": "경기인천",
-  강원: "강원",
+  "인천/경기": "인천경기",
+  "호남/제주/강원": "호남제주강원",
   "대전/충청": "대전충청",
-  호남: "광주전라",
-  "대구/포항": "대구경북",
-  "창원/부산": "부산경남",
-  제주: "제주",
+  "대구/포항": "대구포항",
+  "부산/창원": "부산창원",
 };
 
 // API 응답 데이터를 기반으로 지역 데이터 가공

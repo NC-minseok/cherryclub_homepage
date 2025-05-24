@@ -95,8 +95,7 @@ export async function POST(request: Request) {
         region = regionRows[0].region;
         group_number = regionRows[0].group_number;
       }
-      // region_group_id 제거
-      const { region_group_id, ...rest } = restUserInfo;
+      const { ...rest } = restUserInfo;
       restUserInfoWithoutRegionGroupId = rest;
     }
     // userInfo에 university, region, group_number 필드 추가

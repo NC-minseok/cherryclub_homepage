@@ -63,14 +63,13 @@ export async function GET(request: NextRequest) {
     const userIds = (userRows as any[]).map((row) => row.id);
 
     // 날짜 필터링 조건 추가
-    let tableQuery;
-    let queryParams = [...userIds];
+    const queryParams = [...userIds];
 
     // IN 절에 배열을 직접 전달하는 대신 물음표를 사용자 ID 수만큼 생성합니다
     const placeholders = userIds.map(() => "?").join(",");
 
     // 날짜가 있는 경우: DATE(date) = ? 조건 추가
-    tableQuery = `
+    const tableQuery = `
         SELECT * FROM ${TABLES[type]} 
         WHERE user_id IN (${placeholders}) 
         AND DATE(date) = ?

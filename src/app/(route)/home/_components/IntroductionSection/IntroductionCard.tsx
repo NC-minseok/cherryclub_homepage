@@ -17,7 +17,7 @@ export default function IntroductionCard({ card, index, isMobile }: CardProps) {
       transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
       key={card.id}
       className={`group bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 hover:shadow-xl transition-all duration-500 relative overflow-hidden border border-gray-100 flex flex-col ${
-        isMobile ? "min-w-full h-[500px] mx-auto px-4" : "mx-2"
+        isMobile ? "min-w-full h-[350px] mx-auto px-4" : "mx-2"
       }`}
       whileHover={
         isMobile ? undefined : { y: -8, transition: { duration: 0.3 } }

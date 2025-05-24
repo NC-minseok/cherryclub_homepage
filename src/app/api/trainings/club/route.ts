@@ -25,6 +25,7 @@ export async function GET(request: NextRequest) {
     reading: "training_readings",
     prayer: "training_prayers",
     soc: "training_socs",
+    sevenup: "training_sevenups",
   };
 
   if (!type || !(type in TABLES)) {
@@ -77,6 +78,8 @@ export async function GET(request: NextRequest) {
     queryParams.push(date);
 
     const [tableRows] = await connection.query(tableQuery, queryParams);
+
+    console.log(tableRows);
 
     connection.release();
     return NextResponse.json({ success: true, data: tableRows });

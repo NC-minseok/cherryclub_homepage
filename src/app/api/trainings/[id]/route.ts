@@ -43,6 +43,7 @@ export async function PUT(request: NextRequest) {
     reading: "training_readings",
     prayer: "training_prayers",
     soc: "training_socs",
+    sevenup: "training_sevenups",
   };
   if (!(type in TABLES)) {
     return NextResponse.json(
@@ -120,6 +121,11 @@ export async function PUT(request: NextRequest) {
       ];
       break;
     }
+    case "sevenup": {
+      query = `UPDATE training_sevenups SET date=?, content=?, isShared=? WHERE id=?`;
+      paramsArr = [d.date, d.content, d.isShared ? 1 : 0, id];
+      break;
+    }
   }
 
   let connection;
@@ -190,6 +196,7 @@ export async function DELETE(request: NextRequest) {
     reading: "training_readings",
     prayer: "training_prayers",
     soc: "training_socs",
+    sevenup: "training_sevenups",
   };
   if (!(type in TABLES)) {
     return NextResponse.json(

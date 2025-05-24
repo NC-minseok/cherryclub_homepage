@@ -13,7 +13,6 @@ export async function POST(request: Request) {
       "gender",
       "phone",
       "birthday",
-      "region",
       "universe_id",
       "major",
       "student_id",
@@ -23,7 +22,7 @@ export async function POST(request: Request) {
       "vision_camp_batch",
       "ministry_status",
       "is_cherry_club_member",
-      "group_number",
+      "region_group_id",
       "password",
     ];
     if (requiredFields.some((field) => !data[field] && data[field] !== 0)) {
@@ -58,7 +57,6 @@ export async function POST(request: Request) {
       data.gender,
       data.phone,
       data.birthday,
-      data.region,
       data.universe_id,
       data.major,
       data.student_id,
@@ -68,7 +66,7 @@ export async function POST(request: Request) {
       data.vision_camp_batch,
       data.ministry_status,
       data.is_cherry_club_member,
-      data.group_number,
+      data.region_group_id,
       password, // 사용자가 입력한 비밀번호 해싱값
     ];
 
@@ -78,7 +76,6 @@ export async function POST(request: Request) {
         gender = ?, 
         phone = ?,
         birthday = ?, 
-        region = ?,   
         universe_id = ?, 
         major = ?, 
         student_id = ?,
@@ -88,7 +85,7 @@ export async function POST(request: Request) {
         vision_camp_batch = ?,
         ministry_status = ?,
         is_cherry_club_member = ?,
-        group_number = ?,
+        region_group_id = ?, 
         password = ?,
         created_at = NOW()`,
       queryParams

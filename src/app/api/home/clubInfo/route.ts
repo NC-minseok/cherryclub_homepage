@@ -5,43 +5,44 @@ export async function GET() {
   try {
     const connection = await pool.getConnection();
 
-    // 대학교 데이터와 지역별 인원수 데이터를 함께 가져옴
+    // 대학교 정보 및 멤버 수, 리더명 조회
     const [universitiesRows] = await connection.query(
       `SELECT 
-  univ.id,
-  univ.name AS title,
-  univ.is_cherry_club,
-  univ.ministry_status,
-  univ.image_url,
-  univ.latitude,
-  univ.longitude,
-  COUNT(u.id) AS member_count,
-  MAX(CASE WHEN u.isCampusLeader = 1 THEN u.name ELSE NULL END) AS leader_name
-FROM Universities univ
-LEFT JOIN users u ON u.universe_id = univ.id
-GROUP BY 
-  univ.id,
-  univ.name,
-  univ.is_cherry_club,
-  univ.ministry_status,
-  univ.image_url,
-  univ.latitude,
-  univ.longitude
-HAVING member_count != 0;`
+        univ.id,
+        univ.name AS title,
+        univ.is_cherry_club,
+        univ.ministry_status,
+        univ.image_url,
+        univ.latitude,
+        univ.longitude,
+        COUNT(u.id) AS member_count,
+        MAX(CASE WHEN u.isCampusLeader = 1 THEN u.name ELSE NULL END) AS leader_name
+      FROM Universities univ
+      LEFT JOIN users u ON u.universe_id = univ.id
+      GROUP BY 
+        univ.id,
+        univ.name,
+        univ.is_cherry_club,
+        univ.ministry_status,
+        univ.image_url,
+        univ.latitude,
+        univ.longitude
+      HAVING member_count != 0`
     );
 
+    // 지역별 멤버 수 조회
     const [membersRows] = await connection.query(
       `SELECT 
-      region,
-      count(*) as totalCount 
-      FROM users
-      WHERE region != '0'
-      GROUP BY region;`
+        rg.region AS region,
+        COUNT(*) AS totalCount
+      FROM users u
+      JOIN region_groups rg ON u.region_group_id = rg.id
+      GROUP BY rg.region`
     );
 
     connection.release();
 
-    // 타입 캐스팅
+    // 응답 타입 캐스팅
     const universities = universitiesRows as Array<{
       id: number;
       title: string;
@@ -59,23 +60,9 @@ HAVING member_count != 0;`
       totalCount: number;
     }>;
 
-    // 클라이언트에 필요한 데이터 구조로 응답
     return NextResponse.json({
-      universities: universities.map((uni) => ({
-        id: uni.id,
-        title: uni.title,
-        is_cherry_club: uni.is_cherry_club,
-        ministry_status: uni.ministry_status,
-        image_url: uni.image_url,
-        latitude: uni.latitude,
-        longitude: uni.longitude,
-        member_count: uni.member_count,
-        leader_name: uni.leader_name,
-      })),
-      memberCounts: members.map((member) => ({
-        region: member.region,
-        totalCount: member.totalCount,
-      })),
+      universities,
+      memberCounts: members,
     });
   } catch (error) {
     console.error("DB 검색 오류:", error);

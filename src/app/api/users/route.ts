@@ -15,7 +15,6 @@ import { verifyJwt } from "../utils/jwt";
 export async function GET(request: Request) {
   const AUTH_HEADER = "authorization";
   try {
-    // 1. JWT 인증
     const authHeader = request.headers.get(AUTH_HEADER);
     const token = authHeader?.split(" ")[1];
     if (!token) {
@@ -33,16 +32,21 @@ export async function GET(request: Request) {
     }
 
     const connection = await pool.getConnection();
-    // university name을 조인하여 반환
     const [usersRows] = await connection.query(
-      `SELECT u.id, u.name, u.gender, u.authority, u.phone, u.birthday, u.region, univ.name AS university, u.major, u.student_id, u.grade, u.semester, u.enrollment_status, u.vision_camp_batch, u.ministry_status, u.is_cherry_club_member, u.group_number, u.created_at, u.isCampusLeader
+      `SELECT 
+        u.id, u.name, u.gender, u.authority, u.phone, u.birthday,
+        rg.region, rg.group_number,
+        univ.name AS university,
+        u.major, u.student_id, u.grade, u.semester, u.enrollment_status,
+        u.vision_camp_batch, u.ministry_status, u.is_cherry_club_member,
+        u.created_at, u.isCampusLeader
       FROM users u
       LEFT JOIN Universities univ ON u.universe_id = univ.id
-      WHERE u.region != '0'`
+      LEFT JOIN region_groups rg ON u.region_group_id = rg.id
+      WHERE u.region_group_id IS NOT NULL`
     );
     connection.release();
 
-    // usersRows를 명확한 타입으로 캐스팅
     const users = usersRows as Array<{
       id: number;
       name: string;
@@ -51,7 +55,8 @@ export async function GET(request: Request) {
       phone: string;
       birthday: string;
       region: string;
-      university: string; // university name
+      group_number: string;
+      university: string;
       major: string;
       student_id: string;
       grade: string;
@@ -60,15 +65,12 @@ export async function GET(request: Request) {
       vision_camp_batch: string;
       ministry_status: string;
       is_cherry_club_member: number;
-      group_number: number;
       created_at: string;
       isCampusLeader: number;
     }>;
 
-    // users 배열로 응답
     return NextResponse.json({ users });
   } catch (error) {
-    // DB 오류 처리
     console.error("DB 검색 오류:", error);
     return NextResponse.json(
       { error: "유저 데이터 검색 실패" },

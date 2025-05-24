@@ -5,25 +5,27 @@ export async function GET() {
   try {
     const connection = await pool.getConnection();
 
-    // 대학교 데이터와 지역별 인원수 데이터를 함께 가져옴
+    // 대학교 데이터와 지역별 인원수 데이터를 함께 가져옴 (region_groups 조인)
     const [universitiesRows] = await connection.query(
       `SELECT DISTINCT 
-      u.region, 
+      rg.region, 
       univ.name AS university,
       univ.latitude,
       univ.longitude
       FROM users u
+      LEFT JOIN region_groups rg ON u.region_group_id = rg.id
       LEFT JOIN Universities univ ON u.universe_id = univ.id
-      WHERE u.region != '0' AND u.region != '졸업'`
+      WHERE u.region_group_id IS NOT NULL AND rg.region IS NOT NULL`
     );
 
     const [membersRows] = await connection.query(
       `SELECT 
-      region,
+      rg.region AS region,
       count(*) as totalCount 
-      FROM users
-      WHERE region != '0'
-      GROUP BY region;`
+      FROM users u
+      LEFT JOIN region_groups rg ON u.region_group_id = rg.id
+      WHERE u.region_group_id IS NOT NULL AND rg.region IS NOT NULL
+      GROUP BY rg.region;`
     );
 
     connection.release();

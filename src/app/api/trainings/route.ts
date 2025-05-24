@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
     reading: "training_readings",
     prayer: "training_prayers",
     soc: "training_socs",
+    sevenup: "training_sevenups",
   };
 
   if (!type || !(type in TABLES)) {
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
   switch (type) {
     case "meditation": {
       // 묵상 저장: body.detail에서 값 추출, 컬럼 순서에 맞게 저장
-      const d = body.detail;
+      const d = body;
       query = `INSERT INTO training_meditations (
         date,  title, bible_book_start, bible_chapter_start, bible_verse_start, bible_book_end, bible_chapter_end, bible_verse_end, question1, question2, question3, user_id, isShared
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -83,7 +84,7 @@ export async function POST(request: NextRequest) {
     }
     case "reading": {
       // 성경읽기 저장: body.detail에서 값 추출, 컬럼 순서에 맞게 저장
-      const d = body.detail;
+      const d = body;
       query = `INSERT INTO training_readings (
         date,
         bible_book_start, bible_chapter_start, bible_verse_start,
@@ -115,7 +116,7 @@ export async function POST(request: NextRequest) {
       break;
     }
     case "prayer": {
-      const d = body.detail;
+      const d = body;
       query = `INSERT INTO training_prayers (
         date, user_id, prayer_time, isShared
       ) VALUES (?, ?, ?, ?)`;
@@ -123,7 +124,7 @@ export async function POST(request: NextRequest) {
       break;
     }
     case "soc": {
-      const d = body.detail;
+      const d = body;
       query = `INSERT INTO training_socs (
         user_id, date, situation, my_class, my_teacher, my_subject, teaching, decision, isShared
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -138,6 +139,14 @@ export async function POST(request: NextRequest) {
         d.decision,
         d.isShared ? 1 : 0,
       ];
+      break;
+    }
+    case "sevenup": {
+      const d = body;
+      query = `INSERT INTO training_sevenups (
+        user_id, date, content, isShared
+      ) VALUES (?, ?, ?, ?)`;
+      params = [userId, d.date, d.content, d.isShared ? 1 : 0];
       break;
     }
   }
@@ -180,6 +189,7 @@ export async function GET(request: NextRequest) {
     reading: "training_readings",
     prayer: "training_prayers",
     soc: "training_socs",
+    sevenup: "training_sevenups",
   };
 
   if (!type || !(type in TABLES)) {

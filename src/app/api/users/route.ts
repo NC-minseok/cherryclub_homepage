@@ -15,7 +15,6 @@ import { verifyJwt } from "../utils/jwt";
 export async function GET(request: Request) {
   const AUTH_HEADER = "authorization";
   try {
-    // 1. JWT 인증
     const authHeader = request.headers.get(AUTH_HEADER);
     const token = authHeader?.split(" ")[1];
     if (!token) {
@@ -33,13 +32,21 @@ export async function GET(request: Request) {
     }
 
     const connection = await pool.getConnection();
-    // password 컬럼을 제외한 모든 컬럼 조회
     const [usersRows] = await connection.query(
-      `SELECT id, name, gender, authority, phone, birthday, region, university, major, student_id, grade, semester, enrollment_status, vision_camp_batch, ministry_status, is_cherry_club_member, group_number, created_at, isCampusLeader FROM users WHERE region != '0'`
+      `SELECT 
+        u.id, u.name, u.gender, u.authority, u.phone, u.birthday,
+        rg.region, rg.group_number,
+        univ.name AS university,
+        u.major, u.student_id, u.grade, u.semester, u.enrollment_status,
+        u.vision_camp_batch, u.ministry_status, u.is_cherry_club_member,
+        u.created_at, u.isCampusLeader
+      FROM users u
+      LEFT JOIN Universities univ ON u.universe_id = univ.id
+      LEFT JOIN region_groups rg ON u.region_group_id = rg.id
+      WHERE u.region_group_id IS NOT NULL`
     );
     connection.release();
 
-    // usersRows를 명확한 타입으로 캐스팅
     const users = usersRows as Array<{
       id: number;
       name: string;
@@ -48,6 +55,7 @@ export async function GET(request: Request) {
       phone: string;
       birthday: string;
       region: string;
+      group_number: string;
       university: string;
       major: string;
       student_id: string;
@@ -57,15 +65,12 @@ export async function GET(request: Request) {
       vision_camp_batch: string;
       ministry_status: string;
       is_cherry_club_member: number;
-      group_number: number;
       created_at: string;
       isCampusLeader: number;
     }>;
 
-    // users 배열로 응답
     return NextResponse.json({ users });
   } catch (error) {
-    // DB 오류 처리
     console.error("DB 검색 오류:", error);
     return NextResponse.json(
       { error: "유저 데이터 검색 실패" },

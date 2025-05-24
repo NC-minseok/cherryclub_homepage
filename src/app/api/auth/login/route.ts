@@ -66,7 +66,46 @@ export async function POST(request: Request) {
 
     // 로그인 성공 (user 정보에서 비밀번호 등 민감 정보 제외)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...userInfo } = user;
+    const { password: _, universe_id, ...restUserInfo } = user;
+
+    // universe_id로 university name 조회
+    let universityName = null;
+    if (universe_id) {
+      const [univRows] = await connection.query<RowDataPacket[]>(
+        "SELECT name FROM Universities WHERE id = ?",
+        [universe_id]
+      );
+      if (univRows && univRows[0] && univRows[0].name) {
+        universityName = univRows[0].name;
+      }
+    }
+    // region_group_id로 region, group_number 조회
+    let region = null;
+    let group_number = null;
+    let restUserInfoWithoutRegionGroupId = { ...restUserInfo };
+    if (
+      typeof user.region_group_id !== "undefined" &&
+      user.region_group_id !== null
+    ) {
+      const [regionRows] = await connection.query<RowDataPacket[]>(
+        "SELECT region, group_number FROM region_groups WHERE id = ?",
+        [user.region_group_id]
+      );
+      if (regionRows && regionRows[0]) {
+        region = regionRows[0].region;
+        group_number = regionRows[0].group_number;
+      }
+      const { ...rest } = restUserInfo;
+      restUserInfoWithoutRegionGroupId = rest;
+    }
+    // userInfo에 university, region, group_number 필드 추가
+    const userInfo = {
+      ...restUserInfoWithoutRegionGroupId,
+      university: universityName,
+      region,
+      group_number,
+    };
+
     // JWT 토큰 발급 (id, role/authority 등 주요 정보 포함)
     const token = signJwt({ id: userInfo.id, role: userInfo.authority });
     // 리프레시 토큰 발급 및 DB 저장
@@ -77,15 +116,15 @@ export async function POST(request: Request) {
     ]);
 
     let leaderName = "";
-    if (userInfo.university) {
+    if (universe_id) {
       const [leaderRows] = await connection.query<RowDataPacket[]>(
         `SELECT MAX(CASE WHEN u.isCampusLeader = 1 THEN u.name ELSE NULL END) AS leader_name
          FROM Universities univ
-         LEFT JOIN users u ON u.university = univ.name
-         WHERE univ.name = ?
-         GROUP BY univ.name
+         LEFT JOIN users u ON u.universe_id = univ.id
+         WHERE univ.id = ?
+         GROUP BY univ.id
          HAVING leader_name IS NOT NULL`,
-        [userInfo.university]
+        [universe_id]
       );
       const leaderRow = (leaderRows as RowDataPacket[])[0];
       if (leaderRow && leaderRow.leader_name) {

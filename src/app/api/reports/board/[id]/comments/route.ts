@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { pool } from "../../../../../utils/db";
-import { verifyJwt } from "../../../../../utils/jwt";
+import { pool } from "../../../../utils/db";
+import { verifyJwt } from "../../../../utils/jwt";
 
 // 인증 헤더 상수
 const AUTH_HEADER = "authorization";

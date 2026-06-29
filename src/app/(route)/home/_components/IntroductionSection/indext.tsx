@@ -1,62 +1,97 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { isMobileWeb } from "@toss/utils";
-import {
-  AnimatedTitle,
-  AnimatedTitleDescription,
-} from "@/src/shared/components";
+import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Pagination } from "swiper/modules";
 import { cards } from "../../_data/IntrodeuctionData";
 import IntroductionCard from "./IntroductionCard";
-import SectionTag from "../SectionTag";
 
-// 모바일 감지 훅
-// TODO: 전체상태 관리로 추후 분리
-const useMobileDetection = () => {
-  const [isMobile, setIsMobile] = useState(false);
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(isMobileWeb());
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return isMobile;
-};
-
-// 메인 컴포넌트
 export default function IntroductionSection() {
-  const isMobile = useMobileDetection();
-
-  const TITLE_DESCRIPTION_TEXT = isMobile
-    ? `체리 동아리를 소개합니다!\n체리는 <span class="text-blue-600 font-bold">체인저 리더십</span>의 줄임말입니다. \n체리동아리는 성경적 리더십 훈련을 통해 나를 변화시키고, 내가 속한 캠퍼스와 사회의 각 영역을 변화시키는 동아리입니다!`
-    : `체리 동아리를 소개합니다!\n 체리는 <span class="text-blue-600 font-bold">체인저 리더십</span>의 줄임말입니다.\n체리동아리는 성경적 리더십 훈련을 통해 나를 변화시키고,\n내가 속한 캠퍼스와 사회의 각 영역을 변화시키는 동아리입니다!`;
-
   return (
-    <section className="py-16 sm:py-24 md:py-32 bg-gradient-to-b from-blue-50 via-white to-blue-50">
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto text-center mb-10">
-          <div className="flex flex-col items-center justify-center">
-            <SectionTag text="체리 동아리를 소개" />
-            <AnimatedTitle text="체리 동아리를 소개합니다!" />
-          </div>
+    <section className="py-20 sm:py-28 md:py-36 bg-white">
+      <div className="container mx-auto px-8 sm:px-16 md:px-24">
+        {/* 섹션 헤더 */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex items-center gap-3 mb-6"
+        >
+          <div className="w-8 h-px bg-blue-400" />
+          <span className="text-blue-300 text-sm sm:text-base font-semibold tracking-widest uppercase">
+            King Hero 5K
+          </span>
+        </motion.div>
 
-          <AnimatedTitleDescription
-            isMobile={isMobile}
-            description={TITLE_DESCRIPTION_TEXT}
-          />
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+          className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-gray-900 mb-6 tracking-tighter leading-none"
+        >
+          5K운동을
+          <br />
+          주도하는 캠퍼스
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+          className="text-base sm:text-lg text-gray-500 leading-relaxed max-w-xl mb-16"
+        >
+          활동 사진을 통해 체리클럽의 다양한 5K 사역 현장을 만나보세요.
+        </motion.p>
+
+        {/* 모바일: 회전목마 (coverflow) */}
+        <div className="sm:hidden -mx-8">
+          <Swiper
+            modules={[EffectCoverflow, Pagination]}
+            effect="coverflow"
+            centeredSlides
+            slidesPerView={1.3}
+            spaceBetween={16}
+            coverflowEffect={{
+              rotate: 40,
+              stretch: 0,
+              depth: 120,
+              modifier: 1,
+              slideShadows: false,
+            }}
+            loop={true}
+            pagination={{ clickable: true }}
+            className="pb-10"
+          >
+            {cards.map((card, index) => (
+              <SwiperSlide key={card.id}>
+                <IntroductionCard card={card} index={index} isMobile={true} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 md:gap-x-6 md:gap-y-8 mb-16 sm:mb-20 place-items-center px-6 sm:px-0">
+        {/* 데스크톱: 벤토 그리드 */}
+        <div className="hidden sm:grid sm:grid-cols-3 gap-6">
           {cards.map((card, index) => (
-            <IntroductionCard
+            <div
               key={card.id}
-              card={card}
-              index={index}
-              isMobile={isMobile}
-            />
+              className={
+                index === 0
+                  ? "sm:col-span-2"
+                  : index === cards.length - 1 && cards.length === 3
+                  ? "sm:col-span-3"
+                  : "sm:col-span-1"
+              }
+            >
+              <IntroductionCard card={card} index={index} isMobile={false} />
+            </div>
           ))}
         </div>
       </div>

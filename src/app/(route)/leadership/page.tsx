@@ -22,7 +22,7 @@ export default function LeadershipPage() {
               start: "top 80%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       });
     });
@@ -36,7 +36,9 @@ export default function LeadershipPage() {
       <section className="bg-blue-600 text-white py-20 md:py-32">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">리더십 훈련</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              캠퍼스 5K무료 나눔
+            </h1>
             <p className="text-xl mb-8">
               NCMN 동아리는 체계적인 리더십 훈련 프로그램을 통해 미래 리더로서의
               역량을 개발하도록 돕습니다

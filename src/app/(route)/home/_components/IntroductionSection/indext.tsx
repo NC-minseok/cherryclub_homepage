@@ -31,16 +31,16 @@ export default function IntroductionSection() {
   const isMobile = useMobileDetection();
 
   const TITLE_DESCRIPTION_TEXT = isMobile
-    ? `체리 동아리를 소개합니다!\n체리는 <span class="text-blue-600 font-bold">체인저 리더십</span>의 줄임말입니다. \n체리동아리는 성경적 리더십 훈련을 통해 나를 변화시키고, 내가 속한 캠퍼스와 사회의 각 영역을 변화시키는 동아리입니다!`
-    : `체리 동아리를 소개합니다!\n 체리는 <span class="text-blue-600 font-bold">체인저 리더십</span>의 줄임말입니다.\n체리동아리는 성경적 리더십 훈련을 통해 나를 변화시키고,\n내가 속한 캠퍼스와 사회의 각 영역을 변화시키는 동아리입니다!`;
+    ? `5K운동은 내가 속한(가정, 직장) 반경 <span class="text-red-600 font-bold">5Km</span> 안의 절대 필요가 있는 이웃들에게  <span class="text-red-600 font-bold">예수님의 4대 사역</span>(구제 사역, 교육사역, 보건의료 사역, 복음전파 사역)을 펼치는 것으로, 한국 교회의 부흥과 통일 한국을 이루어 열방을 섬기는 코리아가 되게 하는 하나님의 약속이 있는 사역입니다.`
+    : `5K운동은 내가 속한(가정, 직장) 반경 <span class="text-red-600 font-bold">5Km</span> 안의 절대 필요가 있는 이웃들에게  <span class="text-red-600 font-bold">예수님의 4대 사역</span>(구제 사역, 교육사역, 보건의료 사역, 복음전파 사역)을 펼치는 것으로, 한국 교회의 부흥과 통일 한국을 이루어 열방을 섬기는 코리아가 되게 하는 하나님의 약속이 있는 사역입니다.`;
 
   return (
     <section className="py-16 sm:py-24 md:py-32 bg-gradient-to-b from-blue-50 via-white to-blue-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center mb-10">
           <div className="flex flex-col items-center justify-center">
-            <SectionTag text="체리 동아리를 소개" />
-            <AnimatedTitle text="체리 동아리를 소개합니다!" />
+            <SectionTag text="5K운동 소개" />
+            <AnimatedTitle text="5K 운동이란?" />
           </div>
 
           <AnimatedTitleDescription
@@ -49,7 +49,7 @@ export default function IntroductionSection() {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 md:gap-x-6 md:gap-y-8 mb-16 sm:mb-20 place-items-center px-6 sm:px-0">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 mb-16 sm:mb-20 place-items-center px-6 sm:px-0 max-w-2xl mx-auto">
           {cards.map((card, index) => (
             <IntroductionCard
               key={card.id}

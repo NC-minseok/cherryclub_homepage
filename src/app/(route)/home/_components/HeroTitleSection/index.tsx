@@ -257,14 +257,13 @@ export default function HeroTitleSection() {
                 className="text-5xl sm:text-6xl md:text-9xl font-extrabold text-white mb-8 tracking-tighter drop-shadow-[0_0_15px_rgba(0,0,255,0.8)] md:drop-shadow-[0_0_35px_rgba(0,0,255,0.8)] bg-clip-text"
                 suppressHydrationWarning
               >
-                CHERRY CLUB
+                대학캠퍼스사역
               </motion.h1>
             </AnimatePresence>
           </motion.div>
 
           {/* 어두운 오버레이 - 항상 표시 */}
           <div className="absolute inset-0 bg-black bg-opacity-50 z-0" />
-
           {/* Swiper 이미지 슬라이더 */}
           <div className="absolute inset-0 z-[-1]">
             {!isLoading && heroImages.length > 0 && (

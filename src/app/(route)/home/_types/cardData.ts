@@ -2,7 +2,7 @@
 export interface CardData {
   id: number;
   title: string;
-  image: string;
+  images: string[];
   tag: string;
   descriptions: string[];
   link: string;

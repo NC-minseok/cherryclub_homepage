@@ -33,7 +33,13 @@ export const cards: CardData[] = [
   {
     id: 2,
     title: "5K 청년밥차",
-    images: ["/images/home/campus-ministry.png"],
+    images: ["/images/5kBobcha/0.jpg"],
+    videos: [
+      "/videos/5kBobcha/1.mp4",
+      "/videos/5kBobcha/2.mp4",
+      "/videos/5kBobcha/3.mp4",
+      "/videos/5kBobcha/4.mp4",
+    ],
     tag: "5K 청년밥차",
     descriptions: [
       "체리동아리의 캠퍼스 사역은 대학캠퍼스에 부흥을 이끄는 사역입니다.",
@@ -69,18 +75,5 @@ export const cards: CardData[] = [
     link: "/meetings",
     bgColor1: "bg-yellow-100",
     bgColor2: "bg-red-100",
-  },
-  {
-    id: 4,
-    title: "대외사역",
-    images: ["/images/home/outreach.png"],
-    tag: "DMZ 기도행진",
-    descriptions: [
-      "체리 동아리는 캠퍼스를 넘어 지역사회와 나라를 섬기는 다양한 대외사역을 주도합니다!",
-      "레드하트 캠페인, My5K, 사랑나눔버스, DMZ 기도 행진 등을 통해 하나님의 사랑을 실천합니다!",
-    ],
-    link: "/outreach",
-    bgColor1: "bg-purple-100",
-    bgColor2: "bg-blue-100",
   },
 ];

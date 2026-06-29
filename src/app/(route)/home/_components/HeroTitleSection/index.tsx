@@ -23,12 +23,7 @@ const ANIMATION_CONSTANTS = {
   SWIPER: { delay: 5000, speed: 1500 },
 };
 
-const MINISTRIES = [
-  "캠퍼스 5K",
-  "5K 청년밥차",
-  "캠퍼스 주변 5K",
-  "복음전파 사역",
-];
+const MINISTRIES = ["캠퍼스 5K", "5K 청년밥차", "캠퍼스 주변 5K"];
 
 export default function HeroTitleSection() {
   const ref = useRef(null);

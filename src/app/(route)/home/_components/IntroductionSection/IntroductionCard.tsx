@@ -29,8 +29,8 @@ export default function IntroductionCard({ card, index, isMobile }: CardProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
         key={card.id}
-        className={`group bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 hover:shadow-xl transition-all duration-500 relative overflow-hidden border border-gray-100 flex flex-col w-full ${
-          isMobile ? "mx-auto px-4" : "mx-2"
+        className={`group bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 hover:shadow-xl transition-all duration-500 relative overflow-hidden border border-gray-100 flex flex-col w-full h-full ${
+          isMobile ? "mx-auto px-4" : ""
         }`}
         whileHover={
           isMobile ? undefined : { y: -8, transition: { duration: 0.3 } }
@@ -59,8 +59,8 @@ export default function IntroductionCard({ card, index, isMobile }: CardProps) {
             </span>
           </div>
 
-          {/* 이미지 장수 배지 */}
-          {card.images.length > 1 && (
+          {/* 미디어 장수 배지 */}
+          {(card.images.length > 1 || (card.videos?.length ?? 0) > 0) && (
             <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +76,7 @@ export default function IntroductionCard({ card, index, isMobile }: CardProps) {
                   d="M4 6h16M4 10h16M4 14h16M4 18h16"
                 />
               </svg>
-              {card.images.length}
+              {card.images.length + (card.videos?.length ?? 0)}
             </div>
           )}
 
@@ -128,6 +128,7 @@ export default function IntroductionCard({ card, index, isMobile }: CardProps) {
           <AnimatePresence>
             <ImageLightbox
               images={card.images}
+              videos={card.videos}
               initialIndex={lightboxIndex}
               title={card.title}
               onClose={() => setLightboxOpen(false)}

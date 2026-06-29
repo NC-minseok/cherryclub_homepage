@@ -1,55 +1,91 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { isMobileWeb } from "@toss/utils";
-import {
-  AnimatedTitle,
-  AnimatedTitleDescription,
-} from "@/src/shared/components";
+import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Pagination } from "swiper/modules";
 import { cards } from "../../_data/IntrodeuctionData";
 import IntroductionCard from "./IntroductionCard";
-import SectionTag from "../SectionTag";
 
-// 모바일 감지 훅
-// TODO: 전체상태 관리로 추후 분리
-const useMobileDetection = () => {
-  const [isMobile, setIsMobile] = useState(false);
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(isMobileWeb());
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return isMobile;
-};
-
-// 메인 컴포넌트
 export default function IntroductionSection() {
-  const isMobile = useMobileDetection();
-
-  const TITLE_DESCRIPTION_TEXT = isMobile
-    ? `5K운동은 내가 속한(가정, 직장) 반경 <span class="text-red-600 font-bold">5Km</span> 안의 절대 필요가 있는 이웃들에게  <span class="text-red-600 font-bold">예수님의 4대 사역</span>(구제 사역, 교육사역, 보건의료 사역, 복음전파 사역)을 펼치는 것으로, 한국 교회의 부흥과 통일 한국을 이루어 열방을 섬기는 코리아가 되게 하는 하나님의 약속이 있는 사역입니다.`
-    : `5K운동은 내가 속한(가정, 직장) 반경 <span class="text-red-600 font-bold">5Km</span> 안의 절대 필요가 있는 이웃들에게  <span class="text-red-600 font-bold">예수님의 4대 사역</span>(구제 사역, 교육사역, 보건의료 사역, 복음전파 사역)을 펼치는 것으로, 한국 교회의 부흥과 통일 한국을 이루어 열방을 섬기는 코리아가 되게 하는 하나님의 약속이 있는 사역입니다.`;
-
   return (
-    <section className="py-16 sm:py-24 md:py-32 bg-gradient-to-b from-blue-50 via-white to-blue-50">
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex flex-col items-center justify-center">
-          <SectionTag text="활동 사진" />
-          <AnimatedTitle text="5K운동을 주도하는 캠퍼스" />
+    <section className="py-20 sm:py-28 md:py-36 bg-white">
+      <div className="container mx-auto px-8 sm:px-16 md:px-24">
+        {/* 섹션 헤더 */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex items-center gap-3 mb-6"
+        >
+          <div className="w-8 h-px bg-blue-400" />
+          <span className="text-blue-300 text-sm sm:text-base font-semibold tracking-widest uppercase">
+            King Hero 5K
+          </span>
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+          className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-gray-900 mb-6 tracking-tighter leading-none"
+        >
+          5K운동을
+          <br />
+          주도하는 캠퍼스
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+          className="text-base sm:text-lg text-gray-500 leading-relaxed max-w-xl mb-16"
+        >
+          활동 사진을 통해 체리클럽의 다양한 5K 사역 현장을 만나보세요.
+        </motion.p>
+
+        {/* 모바일: 회전목마 (coverflow) */}
+        <div className="sm:hidden -mx-8">
+          <Swiper
+            modules={[EffectCoverflow, Pagination]}
+            effect="coverflow"
+            centeredSlides
+            slidesPerView={1.3}
+            spaceBetween={16}
+            coverflowEffect={{
+              rotate: 40,
+              stretch: 0,
+              depth: 120,
+              modifier: 1,
+              slideShadows: false,
+            }}
+            loop={true}
+            pagination={{ clickable: true }}
+            className="pb-10"
+          >
+            {cards.map((card, index) => (
+              <SwiperSlide key={card.id}>
+                <IntroductionCard card={card} index={index} isMobile={true} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:gap-8 mb-16 sm:mb-20 place-items-center px-6 sm:px-0 max-w-2xl mx-auto">
+        {/* 데스크톱: 벤토 그리드 */}
+        <div className="hidden sm:grid sm:grid-cols-3 gap-6">
           {cards.map((card, index) => (
-            <IntroductionCard
+            <div
               key={card.id}
-              card={card}
-              index={index}
-              isMobile={isMobile}
-            />
+              className={index === 0 || index === 3 ? "sm:col-span-2" : "sm:col-span-1"}
+            >
+              <IntroductionCard card={card} index={index} isMobile={false} />
+            </div>
           ))}
         </div>
       </div>

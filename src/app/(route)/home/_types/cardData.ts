@@ -3,6 +3,7 @@ export interface CardData {
   id: number;
   title: string;
   images: string[];
+  videos?: string[];
   tag: string;
   descriptions: string[];
   link: string;

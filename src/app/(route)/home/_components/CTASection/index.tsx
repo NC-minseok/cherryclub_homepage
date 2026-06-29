@@ -9,7 +9,7 @@ export default function CTASection() {
   return (
     <section className="py-36 bg-gradient-to-b from-blue-50 to-blue-100 relative overflow-hidden">
       <div className="container mx-auto px-4 text-center relative z-10">
-        <SectionTag text="체리동아리 신청하기" />
+        {/* <SectionTag text="체리동아리 신청하기" /> */}
         <motion.div
           className="max-w-5xl mx-auto"
           variants={itemVariants}

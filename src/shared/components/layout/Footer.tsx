@@ -57,53 +57,39 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-black text-white py-8">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col items-center justify-center">
-          {/* 소셜 미디어 링크 */}
-          <div className="flex space-x-6 mb-6">
-            {socialLinks.map((link, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <a
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.name}
-                  className="text-white hover:text-gray-400 transition-colors duration-300"
-                  title={link.name}
-                >
-                  {link.icon}
-                </a>
-                {link.label && (
-                  <span className="text-xs text-gray-400 mt-1">
-                    {link.label}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
+    <footer className="bg-black text-white py-10">
+      <div className="container mx-auto px-8 sm:px-16 md:px-24">
+        <div className="flex flex-col items-center justify-center gap-6">
+          {/* 상단 구분선 — 히어로 오버라인 스타일 */}
+          {/* <div className="flex items-center gap-3">
+            <div className="w-8 h-px bg-blue-400" />
+            <span className="text-blue-300 text-xs font-semibold tracking-widest uppercase">
+              5k Movement
+            </span>
+            <div className="w-8 h-px bg-blue-400" />
+          </div> */}
 
-          {/* 연락처 정보 */}
-          <div className="flex flex-col md:flex-row items-center justify-center space-y-2 md:space-y-0 md:space-x-6 text-sm mb-4">
-            <div className="flex items-center">
-              <span className="text-gray-400">Phone</span>
-              <span className="ml-2">010-5022-8934</span>
-            </div>
-            <div className="flex items-center">
-              <span className="text-gray-400">E-mail</span>
+          {/* 소셜 미디어 아이콘 */}
+          {/* <div className="flex items-center gap-8">
+            {socialLinks.map((link, index) => (
               <a
-                href="mailto:kingshero@ncmn.kr"
-                className="ml-2 hover:text-gray-400 transition-colors duration-300"
+                key={index}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.name}
+                className="text-white/60 hover:text-blue-300 transition-colors duration-300"
+                title={link.name}
               >
-                kingshero@ncmn.kr
+                {link.icon}
               </a>
-            </div>
-          </div>
+            ))}
+          </div> */}
 
           {/* 저작권 */}
-          <div className="text-xs text-gray-500 mt-4">
+          <p className="text-xs text-white/30 tracking-widest uppercase">
             © {currentYear} NCMN KingHero. All rights reserved.
-          </div>
+          </p>
         </div>
       </div>
     </footer>

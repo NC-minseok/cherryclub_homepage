@@ -20,7 +20,7 @@ const ANIMATION_CONSTANTS = {
   SECTION_FADE_IN: { duration: 1, delay: 0, ease: "easeIn" },
   TITLE_FADE_IN: { duration: 1.2, delay: 0.3, ease: "easeOut" },
   IMAGE_SCALE: { duration: 2, delay: 0, ease: "easeOut" },
-  SWIPER: { delay: 5000, speed: 1500 },
+  SWIPER: { delay: 3000, speed: 1500 },
 };
 
 const MINISTRIES = ["캠퍼스 5K 무료나눔", "5K 청년밥차", "캠퍼스 주변 5K"];

@@ -81,7 +81,7 @@ export default function RootLayout({
       >
         <Header />
         <main className="flex-grow">{children}</main>
-        <JoinButton />
+        {/* <JoinButton /> */}
         <Footer />
 
         <Analytics />

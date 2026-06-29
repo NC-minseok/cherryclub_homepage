@@ -4,7 +4,7 @@ import { CardData } from "../_types/cardData";
 export const cards: CardData[] = [
   {
     id: 1,
-    title: "캠퍼스 5K",
+    title: "캠퍼스 5K 무료나눔",
     images: [
       "/images/campusIn5K/0.jpeg",
       "/images/campusIn5K/1.jpeg",
@@ -17,15 +17,9 @@ export const cards: CardData[] = [
       "/images/campusIn5K/8.jpeg",
       "/images/campusIn5K/9.jpeg",
       "/images/campusIn5K/10.jpeg",
-      "/images/campusIn5K/11.jpeg",
-      "/images/campusIn5K/12.jpeg",
-      "/images/campusIn5K/13.jpeg",
-      "/images/campusIn5K/14.jpeg",
     ],
     tag: "캠퍼스 5K 무료나눔",
-    descriptions: [
-      "예수 그리스도의 리더십을 본받아, 나의 신분과 사명을 바로 알고",
-    ],
+    descriptions: ["따뜻한 사랑으로 아름다운 캠퍼스를 만들어 갑니다."],
     link: "/leadership",
     bgColor1: "bg-blue-100",
     bgColor2: "bg-purple-100",
@@ -41,10 +35,7 @@ export const cards: CardData[] = [
       "/videos/5kBobcha/4.mp4",
     ],
     tag: "5K 청년밥차",
-    descriptions: [
-      "체리동아리의 캠퍼스 사역은 대학캠퍼스에 부흥을 이끄는 사역입니다.",
-      "대학캠퍼스 안에서 5K 무료나눔, 5K 청년밥차, 캠퍼스 워십, Red HeartDay를 주도합니다!",
-    ],
+    descriptions: ["이 나라의 대학생들을 응원합니다!"],
     link: "/campus",
     bgColor1: "bg-green-100",
     bgColor2: "bg-blue-100",
@@ -69,9 +60,7 @@ export const cards: CardData[] = [
       "/images/campus5K/13.jpeg",
     ],
     tag: "캠퍼스 주변 5K",
-    descriptions: [
-      "매월 1회 전체모임과 지역별 모임을 통해 체리 동아리 회원들은 예배와 교제를 통해 비전을 공유하고 함께 성장합니다.",
-    ],
+    descriptions: ["아름다운 세상을 만들어가는 아름다운 대학생들"],
     link: "/meetings",
     bgColor1: "bg-yellow-100",
     bgColor2: "bg-red-100",

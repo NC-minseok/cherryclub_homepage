@@ -82,7 +82,13 @@ export default function IntroductionSection() {
           {cards.map((card, index) => (
             <div
               key={card.id}
-              className={index === 0 || index === 3 ? "sm:col-span-2" : "sm:col-span-1"}
+              className={
+                index === 0
+                  ? "sm:col-span-2"
+                  : index === cards.length - 1 && cards.length === 3
+                  ? "sm:col-span-3"
+                  : "sm:col-span-1"
+              }
             >
               <IntroductionCard card={card} index={index} isMobile={false} />
             </div>

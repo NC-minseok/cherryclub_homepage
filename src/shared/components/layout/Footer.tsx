@@ -102,7 +102,7 @@ const Footer = () => {
 
           {/* 저작권 */}
           <div className="text-xs text-gray-500 mt-4">
-            © {currentYear} Cherry Club. All rights reserved.
+            © {currentYear} NCMN KingHero. All rights reserved.
           </div>
         </div>
       </div>

@@ -26,7 +26,7 @@ export default function Home() {
     >
       <HeroTitleSection />
       <IntroductionSection />
-      <StatusSection />
+      {/* <StatusSection /> */}
       <CTASection />
     </div>
   );

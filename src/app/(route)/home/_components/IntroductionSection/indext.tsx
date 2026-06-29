@@ -37,16 +37,9 @@ export default function IntroductionSection() {
   return (
     <section className="py-16 sm:py-24 md:py-32 bg-gradient-to-b from-blue-50 via-white to-blue-50">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto text-center mb-10">
-          <div className="flex flex-col items-center justify-center">
-            <SectionTag text="5K운동 소개" />
-            <AnimatedTitle text="5K 운동이란?" />
-          </div>
-
-          <AnimatedTitleDescription
-            isMobile={isMobile}
-            description={TITLE_DESCRIPTION_TEXT}
-          />
+        <div className="flex flex-col items-center justify-center">
+          <SectionTag text="활동 사진" />
+          <AnimatedTitle text="5K운동을 주도하는 캠퍼스" />
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:gap-8 mb-16 sm:mb-20 place-items-center px-6 sm:px-0 max-w-2xl mx-auto">

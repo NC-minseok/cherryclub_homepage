@@ -17,26 +17,18 @@ import "swiper/css/autoplay";
 import useHeroImages from "../../_hook/useHeroImages";
 
 const ANIMATION_CONSTANTS = {
-  SECTION_FADE_IN: {
-    duration: 1,
-    delay: 0,
-    ease: "easeIn",
-  },
-  TITLE_FADE_IN: {
-    duration: 1.2,
-    delay: 0.2,
-    ease: "easeOut",
-  },
-  IMAGE_SCALE: {
-    duration: 2,
-    delay: 0,
-    ease: "easeOut",
-  },
-  SWIPER: {
-    delay: 5000,
-    speed: 1500,
-  },
+  SECTION_FADE_IN: { duration: 1, delay: 0, ease: "easeIn" },
+  TITLE_FADE_IN: { duration: 1.2, delay: 0.3, ease: "easeOut" },
+  IMAGE_SCALE: { duration: 2, delay: 0, ease: "easeOut" },
+  SWIPER: { delay: 5000, speed: 1500 },
 };
+
+const MINISTRIES = [
+  "캠퍼스 5K",
+  "5K 청년밥차",
+  "캠퍼스 주변 5K",
+  "복음전파 사역",
+];
 
 export default function HeroTitleSection() {
   const ref = useRef(null);
@@ -57,45 +49,97 @@ export default function HeroTitleSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={ANIMATION_CONSTANTS.SECTION_FADE_IN}
-        className="relative h-screen overflow-hidden flex items-center justify-center"
+        className="relative h-screen overflow-hidden flex items-center"
         suppressHydrationWarning
       >
-        {/* 콘텐츠 영역 */}
+        {/* 콘텐츠 영역 — 좌측 정렬 */}
         <motion.div
           style={{ y, opacity }}
-          className="relative z-10 text-center px-4 max-w-4xl mx-auto"
+          className="relative z-10 px-8 sm:px-16 md:px-24 max-w-5xl"
           suppressHydrationWarning
         >
-          <AnimatePresence>
-            <motion.h1
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={ANIMATION_CONSTANTS.TITLE_FADE_IN}
-              className="text-5xl sm:text-6xl md:text-9xl font-extrabold text-white mb-8 tracking-tighter drop-shadow-[0_0_15px_rgba(0,0,255,0.8)] md:drop-shadow-[0_0_35px_rgba(0,0,255,0.8)] bg-clip-text"
-              suppressHydrationWarning
-            >
-              5K운동이란?
-            </motion.h1>
-          </AnimatePresence>
+          {/* 오버라인 레이블 */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            className="flex items-center gap-3 mb-6"
+            suppressHydrationWarning
+          >
+            <div className="w-8 h-px bg-blue-400" />
+            <span className="text-blue-300 text-sm sm:text-base font-semibold tracking-widest uppercase">
+              5k Movement
+            </span>
+          </motion.div>
+
+          {/* 타이틀 */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={ANIMATION_CONSTANTS.TITLE_FADE_IN}
+            className="text-6xl sm:text-7xl md:text-[9rem] font-extrabold text-white mb-6 tracking-tighter leading-none drop-shadow-[0_0_30px_rgba(0,100,255,0.6)]"
+            suppressHydrationWarning
+          >
+            5K운동
+            <br />
+            이란?
+          </motion.h1>
+
+          {/* 설명 */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
-            className="text-base sm:text-lg md:text-2xl text-white/90 leading-loose max-w-2xl mx-auto drop-shadow-md"
+            className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed max-w-xl mb-8"
             suppressHydrationWarning
           >
             내가 속한 가정과 직장, 반경 5Km 안의 절대 필요가 있는 이웃들에게
-            예수님의{" "}
-            <span className="text-blue-300 font-semibold">
-              구제·교육·보건의료·복음전파
-            </span>{" "}
-            4대 사역을 펼치는 것으로, 한국 교회의 부흥과 통일 한국을 이루어
+            예수님의 4대 사역을 펼치며 한국 교회의 부흥과 통일 한국을 이루어
             열방을 섬기는 코리아가 되게 하는 하나님의 약속이 있는 사역입니다.
           </motion.p>
+
+          {/* 4대 사역 뱃지 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
+            className="flex flex-wrap gap-2"
+            suppressHydrationWarning
+          >
+            {MINISTRIES.map((ministry, i) => (
+              <motion.span
+                key={ministry}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.0 + i * 0.1 }}
+                className="px-4 py-1.5 rounded-full border border-blue-400/50 text-blue-200 text-sm font-medium backdrop-blur-sm bg-blue-950/30"
+              >
+                {ministry}
+              </motion.span>
+            ))}
+          </motion.div>
         </motion.div>
 
-        {/* 어두운 오버레이 */}
-        <div className="absolute inset-0 bg-black bg-opacity-50 z-0" />
+        {/* 스크롤 인디케이터 */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.5 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+          suppressHydrationWarning
+        >
+          <span className="text-white/40 text-xs tracking-widest uppercase">
+            Scroll
+          </span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="w-px h-10 bg-gradient-to-b from-white/40 to-transparent"
+          />
+        </motion.div>
+
+        {/* 그라디언트 오버레이 — 좌측 강조 */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/20 z-0" />
 
         {/* Swiper 이미지 슬라이더 */}
         <div className="absolute inset-0 z-[-1]">

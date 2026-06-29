@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -35,14 +35,14 @@ export default function ImageLightbox({
 
   const currentItem = media[current];
 
-  const prev = () => {
+  const prev = useCallback(() => {
     setPaused(true);
     setCurrent((c) => (c - 1 + media.length) % media.length);
-  };
-  const next = () => {
+  }, [media.length]);
+  const next = useCallback(() => {
     setPaused(true);
     setCurrent((c) => (c + 1) % media.length);
-  };
+  }, [media.length]);
   const goTo = (i: number) => {
     setPaused(true);
     setCurrent(i);
@@ -74,7 +74,7 @@ export default function ImageLightbox({
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, []);
+  }, [next, onClose, prev]);
 
   // 스크롤 잠금
   useEffect(() => {
@@ -91,7 +91,10 @@ export default function ImageLightbox({
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) next();
+      else prev();
+    }
     touchStartX.current = null;
   };
 

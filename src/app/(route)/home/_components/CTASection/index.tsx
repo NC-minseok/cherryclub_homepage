@@ -1,44 +1,98 @@
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import Link from "next/link";
-import useScrollAnimation from "@/src/shared/hook/useScrollAnimation";
 
 const INSTAGRAM_URL = "https://www.instagram.com/noriter_otr/";
 // TODO: 7월 3일 5K 아웃리치 신청 링크로 교체
 const OUTREACH_APPLY_URL = "#";
 
+const containerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.15 } },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: "easeOut" },
+  },
+};
+
 export default function CTASection() {
-  const { itemVariants, style } = useScrollAnimation();
-
   return (
-    <section className="py-10 bg-black relative overflow-hidden flex items-center justify-center">
+    <section className="relative py-24 sm:py-32 md:py-40 bg-black overflow-hidden">
       {/* 배경 글로우 */}
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-950/30 via-black to-black pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-950/40 via-black to-black pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] rounded-full bg-blue-600/10 blur-[120px] pointer-events-none" />
 
-      <div className="relative z-10 flex flex-col items-center gap-6">
-        <motion.p
-          className="text-blue-200 text-sm sm:text-base font-semibold tracking-widest uppercase flex items-center gap-3"
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <span className="w-8 h-px bg-blue-400 inline-block" />
-          캠퍼스 주변 5K 아웃리치 신청
-          <span className="w-8 h-px bg-blue-400 inline-block" />
-        </motion.p>
+      <motion.div
+        className="relative z-10 container mx-auto px-8 sm:px-16 md:px-24 flex flex-col items-center text-center"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        {/* 오버라인 레이블 */}
         <motion.div
-          className="flex flex-row items-center gap-4"
           variants={itemVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          style={{ ...style }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex items-center gap-3 mb-6"
         >
-          {/* 신청 버튼 */}
+          <span className="w-8 h-px bg-blue-400" />
+          <span className="text-blue-300 text-sm sm:text-base font-semibold tracking-widest uppercase">
+            Join Us
+          </span>
+          <span className="w-8 h-px bg-blue-400" />
+        </motion.div>
+
+        {/* 타이틀 */}
+        <motion.h2
+          variants={itemVariants}
+          className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tighter leading-none drop-shadow-[0_0_30px_rgba(0,100,255,0.5)]"
+        >
+          함께 5K 운동에
+          <br />
+          동참하세요
+        </motion.h2>
+
+        {/* 일정 뱃지 */}
+        <motion.div variants={itemVariants} className="mb-8">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/50 text-blue-200 text-sm font-medium backdrop-blur-sm bg-blue-950/30">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            2026.07.03 · 캠퍼스 주변 5K 아웃리치
+          </span>
+        </motion.div>
+
+        {/* 설명 */}
+        {/* <motion.p
+          variants={itemVariants}
+          className="text-base sm:text-lg text-white/70 leading-relaxed max-w-xl mb-10"
+        >
+          캠퍼스 주변 반경 5Km, 절대 필요가 있는 이웃에게 예수님의 사랑을 전하는
+          현장에 여러분을 초대합니다.
+        </motion.p> */}
+
+        {/* 버튼 */}
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
+        >
+          {/* 신청 버튼 (주요 CTA) */}
           <motion.div
-            className="inline-block"
+            className="inline-block w-full sm:w-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -46,9 +100,9 @@ export default function CTASection() {
               href={OUTREACH_APPLY_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-blue-400/50 text-blue-200 backdrop-blur-sm bg-blue-950/30 px-6 py-3 rounded-full font-semibold text-base hover:bg-blue-900/50 hover:border-blue-400 transition-all shadow-lg inline-flex items-center gap-2 touch-manipulation"
+              className="w-full justify-center bg-blue-600 text-white px-8 py-4 rounded-full font-semibold text-base md:text-lg hover:bg-blue-500 transition-all shadow-[0_0_30px_rgba(0,100,255,0.4)] hover:shadow-[0_0_45px_rgba(0,100,255,0.6)] inline-flex items-center gap-2 touch-manipulation"
             >
-              <span>7/3 5K 아웃리치 신청</span>
+              <span>5K 아웃리치 신청</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4"
@@ -64,9 +118,9 @@ export default function CTASection() {
             </Link>
           </motion.div>
 
-          {/* 인스타그램 버튼 */}
+          {/* 인스타그램 버튼 (보조) */}
           <motion.div
-            className="inline-block"
+            className="inline-block w-full sm:w-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -74,7 +128,7 @@ export default function CTASection() {
               href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white px-6 py-3 rounded-full font-semibold text-base hover:opacity-90 transition-opacity shadow-lg inline-flex items-center gap-2 touch-manipulation"
+              className="w-full justify-center border border-blue-400/50 text-blue-200 backdrop-blur-sm bg-blue-950/30 px-8 py-4 rounded-full font-semibold text-base md:text-lg hover:bg-blue-900/50 hover:border-blue-400 transition-all inline-flex items-center gap-2 touch-manipulation"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +142,7 @@ export default function CTASection() {
             </Link>
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

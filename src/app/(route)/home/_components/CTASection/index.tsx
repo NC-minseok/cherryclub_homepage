@@ -2,8 +2,7 @@ import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 
 const INSTAGRAM_URL = "https://www.instagram.com/noriter_otr/";
-// TODO: 7월 3일 5K 아웃리치 신청 링크로 교체
-const OUTREACH_APPLY_URL = "#";
+const OUTREACH_APPLY_URL = "https://forms.gle/22gShbS3nPVUepev6";
 
 const containerVariants: Variants = {
   hidden: {},

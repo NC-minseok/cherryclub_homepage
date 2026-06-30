@@ -4,6 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
+// 이미지 자동 슬라이드 설정 (Swiper 스타일)
+// delay: 다음 사진으로 넘어가기까지 대기 시간(ms)
+// speed: 사진 전환 애니메이션 속도(ms)
+const SLIDER = { delay: 3000, speed: 800 };
+
 type MediaItem =
   | { type: "image"; src: string }
   | { type: "video"; src: string };
@@ -61,7 +66,7 @@ export default function ImageLightbox({
     if (media.length <= 1 || paused) return;
     const timer = setInterval(() => {
       setCurrent((c) => (c + 1) % media.length);
-    }, 3000);
+    }, SLIDER.delay);
     return () => clearInterval(timer);
   }, [media.length, paused]);
 
@@ -131,11 +136,21 @@ export default function ImageLightbox({
               aria-label={paused ? "자동 재생" : "일시정지"}
             >
               {paused ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M8 5v14l11-7z" />
                 </svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                 </svg>
               )}
@@ -148,8 +163,19 @@ export default function ImageLightbox({
             className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
             aria-label="닫기"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -162,14 +188,14 @@ export default function ImageLightbox({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence initial={false}>
           <motion.div
             key={current}
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="relative w-full h-full flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: SLIDER.speed / 1000, ease: "easeInOut" }}
+            className="absolute inset-0 flex items-center justify-center"
           >
             {currentItem?.type === "video" ? (
               <video
@@ -203,8 +229,19 @@ export default function ImageLightbox({
               className="absolute left-3 w-10 h-10 flex items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors backdrop-blur-sm"
               aria-label="이전"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
             <button
@@ -212,24 +249,22 @@ export default function ImageLightbox({
               className="absolute right-3 w-10 h-10 flex items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors backdrop-blur-sm"
               aria-label="다음"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </>
-        )}
-
-        {/* 자동재생 진행 바 (이미지일 때만) */}
-        {media.length > 1 && !paused && currentItem?.type === "image" && (
-          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/20">
-            <motion.div
-              key={current}
-              className="h-full bg-white"
-              initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 3, ease: "linear" }}
-            />
-          </div>
         )}
       </div>
 
@@ -252,10 +287,21 @@ export default function ImageLightbox({
                 aria-label={`${i + 1}번째 ${item.type === "video" ? "영상" : "사진"}`}
               >
                 {item.type === "image" ? (
-                  <Image src={item.src} alt="" fill className="object-cover" sizes="56px" />
+                  <Image
+                    src={item.src}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="56px"
+                  />
                 ) : (
                   <div className="w-full h-full bg-gray-800 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   </div>

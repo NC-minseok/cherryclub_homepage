@@ -17,7 +17,13 @@ export default function IntroductionCard({ card, index, isMobile }: CardProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const openLightbox = (i = 0) => {
+  // openVideoFirst가 설정된 카드는 첫 영상부터(미디어 배열에서 이미지 다음) 열림
+  const defaultIndex =
+    card.openVideoFirst && (card.videos?.length ?? 0) > 0
+      ? card.images.length
+      : 0;
+
+  const openLightbox = (i = defaultIndex) => {
     setLightboxIndex(i);
     setLightboxOpen(true);
   };
@@ -36,7 +42,7 @@ export default function IntroductionCard({ card, index, isMobile }: CardProps) {
           isMobile ? undefined : { y: -8, transition: { duration: 0.3 } }
         }
         whileTap={{ scale: 0.98 }}
-        onClick={() => openLightbox(0)}
+        onClick={() => openLightbox()}
         style={{ cursor: "zoom-in" }}
       >
         <div

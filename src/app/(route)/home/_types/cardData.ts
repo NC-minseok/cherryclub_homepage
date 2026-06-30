@@ -9,4 +9,6 @@ export interface CardData {
   link: string;
   bgColor1: string;
   bgColor2: string;
+  // 클릭 시 첫 영상부터 라이트박스를 열지 여부
+  openVideoFirst?: boolean;
 }

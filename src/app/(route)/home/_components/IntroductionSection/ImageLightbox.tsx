@@ -178,6 +178,7 @@ export default function ImageLightbox({
                 controls
                 autoPlay
                 playsInline
+                onEnded={next}
                 className="max-w-full max-h-full object-contain"
                 style={{ maxHeight: "calc(100vh - 160px)" }}
               />

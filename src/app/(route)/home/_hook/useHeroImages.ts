@@ -9,10 +9,11 @@ const fetcher = async (url: string): Promise<string[]> => {
   return response.json();
 };
 
-// 기본 이미지 경로
+// 기본 이미지 경로 (실제 HeroSession 폴더 파일과 일치시켜 첫 페인트에서 바로 로드)
 export const DEFAULT_HERO_IMAGES: string[] = [
-  "/images/home/HeroSession/DSC01527.jpg",
-  "/images/home/HeroSession/DSC04061.JPG",
+  "/images/home/HeroSession/0.jpeg",
+  "/images/home/HeroSession/1.jpeg",
+  "/images/home/HeroSession/3.jpg",
 ];
 
 export default function useHeroImages() {

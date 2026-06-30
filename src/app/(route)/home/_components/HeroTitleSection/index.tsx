@@ -163,9 +163,10 @@ export default function HeroTitleSection() {
                       src={image}
                       alt={`Image ${index + 1}`}
                       fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="100vw"
                       className="object-cover"
-                      loading="lazy"
+                      priority={index === 0}
+                      loading={index === 0 ? "eager" : "lazy"}
                       placeholder="blur"
                       blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjY2NjYyIvPjwvc3ZnPg=="
                     />
